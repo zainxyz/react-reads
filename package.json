@@ -1,0 +1,30 @@
+{
+  "name": "react-reads",
+  "version": "1.0.0",
+  "description": "A my-reads application to categorize the books that I'm currently reading, want to read, and have already read.",
+  "homepage": "https://github.com/zainxyz/react-reads#readme",
+  "bugs": {
+    "url": "https://github.com/zainxyz/react-reads/issues"
+  },
+  "license": "ISC",
+  "author": "Zain Abidi <hello@zainabidi.com> (http://zain.xyz)",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/zainxyz/react-reads.git"
+  },
+  "dependencies": {
+    "prop-types": "15.5.10",
+    "react": "15.5.4",
+    "react-dom": "15.5.4"
+  },
+  "devDependencies": {
+    "react-scripts": "0.9.5"
+  },
+  "scripts": {
+    "build": "react-scripts build",
+    "eject": "react-scripts eject",
+    "start": "react-scripts start",
+    "test": "react-scripts test --env=jsdom"
+  }
+}
