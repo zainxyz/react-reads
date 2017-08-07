@@ -40,9 +40,9 @@ class SearchBar extends Component {
     return (
       <div className="search-input-wrapper">
         <input
-          type="text"
-          placeholder={this.props.placeholder}
           onChange={(e) => this.updateQuery(e.target.value)}
+          placeholder={this.props.placeholder}
+          type="text"
         />
       </div>
     );

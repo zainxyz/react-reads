@@ -92,20 +92,35 @@ class Book extends Component {
    * @return {JSX}
    */
   renderBookCover() {
+    const { title, imageLinks, style, subtitle, } = this.props;
+
     /**
      * Build the styles for the book cover.
      * TODO: Move styles to a higher up config.
      * @type {Object}
      */
     const bookCoverStyles = {
-      ...this.props.style.bookCover,
-      backgroundImage: `url(${this.props.imageLinks.thumbnail})`,
+      ...style.bookCover,
+      backgroundImage: `url(${imageLinks.thumbnail})`,
     };
 
+    /**
+     * Build the alternate text for the image
+     * @type {String}
+     */
+    let altText = `Book: ${title}`;
+
+    // Append the 'subtitle' of the book (to the altText) if one is present
+    if (!isEmpty(subtitle)) {
+      altText = `${altText} (${subtitle})`;
+    }
+
     return (
-      <div
+      <img
+        alt={altText}
         className="book-cover"
         style={bookCoverStyles}
+        title={title}
       />
     );
   }
@@ -151,6 +166,7 @@ Book.propTypes = {
   onShelfChange: PropTypes.func,
   shelf: PropTypes.string,
   style: PropTypes.object,
+  subtitle: PropTypes.string,
   title: PropTypes.string,
 };
 
@@ -165,6 +181,7 @@ Book.defaultProps = {
       height: '193px',
     },
   },
+  subtitle: '',
   title: '',
 };
 
