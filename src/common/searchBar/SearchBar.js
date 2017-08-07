@@ -19,7 +19,7 @@ class SearchBar extends Component {
 
   /**
    * Update the query value and send it back via a props 'getQuery()' function call
-   * @param  {String}        query The searched query
+   * @param  {string}        query The searched query
    * @return {Function|null}
    */
   updateQuery(query) {

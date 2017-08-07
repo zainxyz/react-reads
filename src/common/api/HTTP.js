@@ -1,5 +1,6 @@
 /**
  * This file was taken from a gist written by me (Zain)
+ * @module HTTP
  * @author Zain Abidi <https://github.com/zainxyz>
  * @see {@link https://gist.github.com/zainxyz/c2cf0ae5920db5a84a5d6e46b0632c79}
  */
@@ -24,7 +25,8 @@ const APP_HEADERS = {
  * It returns a promise which has the final
  * JSON after going through the .json() method.
  *
- * @param  {String}  options.url    The URL to fetch from
+ * @param  {Object}  options         The options for the fetch call
+ * @param  {string}  options.url    The URL to fetch from
  * @param  {Object}  options.config The defined config object with method, body, etc.
  * @return {Promise}
  */
@@ -44,11 +46,12 @@ const FETCH = ({ url, config, }) =>
 
 /**
  * Build the config for all of the HTTP calls.
- * @param  {Object} [options.body]    The body of the request
- * @param  {String} options.cache   The cache type
+ * @param  {Object} options         The config options
+ * @param  {Object} [options.body]  The body of the request
+ * @param  {string} options.cache   The cache type
  * @param  {Object} options.headers The headers
- * @param  {String} options.method  The method GET, POST, PUT, etc.
- * @param  {String} options.mode    The fetch mode
+ * @param  {string} options.method  The method GET, POST, PUT, etc.
+ * @param  {string} options.mode    The fetch mode
  * @return {Object}                 The final config
  */
 const buildConfig = ({ body = null, cache = 'default', headers, method, mode = 'cors', }) => ({
@@ -66,7 +69,8 @@ const buildConfig = ({ body = null, cache = 'default', headers, method, mode = '
  * Simple GET() method.
  * Returns a FETCH() call which returns a promise
  *
- * @param  {String}  options.url     The URL to GET
+ * @param  {Object}  options         The options for the GET fetch call
+ * @param  {string}  options.url     The URL to GET
  * @param  {Object}  options.headers Any additional headers
  * @return {Promise}
  */
@@ -83,7 +87,8 @@ export const GET = ({ url, headers, }) =>
  * Simple POST() method.
  * Returns a FETCH() call which returns a promise
  *
- * @param  {String}  options.url     The URL to POST to
+ * @param  {Object}  options         The options for the POST fetch call
+ * @param  {string}  options.url     The URL to POST to
  * @param  {Object}  options.headers Any additional headers
  * @param  {Object}  options.body    The Body of the POST request
  * @return {Promise}
@@ -102,7 +107,8 @@ export const POST = ({ url, headers, body, }) =>
  * Simple PUT() method.
  * Returns a FETCH() call which returns a promise
  *
- * @param  {String}  options.url     The URL to PUT to
+ * @param  {Object}  options         The options for the PUT fetch call
+ * @param  {string}  options.url     The URL to PUT to
  * @param  {Object}  options.headers Any additional headers
  * @param  {Object}  options.body    The Body of the PUT request
  * @return {Promise}
@@ -121,7 +127,8 @@ export const PUT = ({ url, headers, body, }) =>
  * Simple PATCH() method.
  * Returns a FETCH() call which returns a promise
  *
- * @param  {String}  options.url     The URL to PATCH to
+ * @param  {Object}  options         The options for the PATCH fetch call
+ * @param  {string}  options.url     The URL to PATCH to
  * @param  {Object}  options.headers Any additional headers
  * @param  {Object}  options.body    The Body of the PATCH request
  * @return {Promise}
@@ -140,7 +147,8 @@ export const PATCH = ({ url, headers, body, }) =>
  * Simple DELETE() method.
  * Returns a FETCH() call which returns a promise
  *
- * @param  {String}  options.url     The URL to DELETE to
+ * @param  {Object}  options         The options for the DELETE fetch call
+ * @param  {string}  options.url     The URL to DELETE to
  * @param  {Object}  options.headers Any additional headers
  * @return {Promise}
  */

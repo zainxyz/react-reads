@@ -6,7 +6,7 @@
 class CustomError extends Error {
   /**
    * Create a CustomError
-   * @param {String} name
+   * @param {string} name
    * @param {string} message
    */
   constructor(name, message) {

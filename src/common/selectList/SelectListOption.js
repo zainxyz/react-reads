@@ -3,9 +3,10 @@ import React from 'react';
 
 /**
  * Render a single select drop-down option
+ * @param  {Object}  options          The select list options
  * @param  {Node}    options.children The passed in children
- * @param  {Boolean} options.disabled Availability of the select option
- * @param  {String}  options.value    User displayed value of the select option
+ * @param  {boolean} options.disabled Availability of the select option
+ * @param  {string}  options.value    User displayed value of the select option
  * @return {JSX}
  */
 const SelectListOption = ({

@@ -49,19 +49,17 @@ class MyReads extends Component {
   fetchAllBooks() {
     getAllBooks()
       .then(res => {
-        /** @type {Array} This is the final booksList coming back from the API fetch call */
+        // This is the final booksList coming back from the API fetch call.
         const booksList = res.books ? res.books : [];
-        /** @type {Array} Filtered books on the 'currentlyReading' shelf. */
+        // Filtered books on the 'currentlyReading' shelf.
         const currentlyReading = filterBooksListByShelfId(booksList, 'currentlyReading');
-        /** @type {Array} Filtered books on the 'read' shelf. */
+        // Filtered books on the 'read' shelf.
         const read = filterBooksListByShelfId(booksList, 'read');
-        /** @type {Array} Filtered books on the 'wantToRead' shelf. */
+        // Filtered books on the 'wantToRead' shelf.
         const wantToRead = filterBooksListByShelfId(booksList, 'wantToRead');
 
-        /**
-         * After successfully fetching the 'booksList', update the component's state with the
-         * updated shelves and their 'booksList.'
-         */
+        // After successfully fetching the 'booksList', update the component's state with the
+        // updated shelves and their 'booksList.'
         this.setState({
           shelves: {
             currentlyReading: {
@@ -90,9 +88,7 @@ class MyReads extends Component {
     const { shelves, } = this.state;
 
     if (!isEmpty(shelves)) {
-      /**
-       * Render a BookShelf for each of the shelves in the current component's state
-       */
+      // Render a BookShelf for each of the shelves in the current component's state
       return Object.keys(shelves).map(idx => (
         <BookShelf
           {...shelves[idx]}

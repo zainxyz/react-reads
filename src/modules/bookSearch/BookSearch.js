@@ -26,7 +26,7 @@ class BookSearch extends Component {
 
   /**
    * Fetch a list of books based on the given query
-   * @param  {String}        query The given query to search
+   * @param  {string}        query The given query to search
    * @return {Function|null}
    */
   fetchBooksByQuery(query) {

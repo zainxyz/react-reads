@@ -25,7 +25,7 @@ class Book extends Component {
 
   /**
    * On change of each of the book's shelf name (shelfId)
-   * @param  {String} shelfId The id of the new shelf
+   * @param  {string} shelfId The id of the new shelf
    */
   onSelectChange(shelfId) {
     this.updateBook(shelfId);
@@ -34,7 +34,7 @@ class Book extends Component {
 
   /**
    * Convert the given list of authors into a single string for better readability
-   * @return {String|null}
+   * @return {string|null}
    */
   getAuthors() {
     const { authors, } = this.props;
@@ -80,7 +80,7 @@ class Book extends Component {
 
   /**
    * Update the book - to - shelf association
-   * @param  {String} shelfId The id of the new shelf
+   * @param  {string} shelfId The id of the new shelf
    */
   updateBook(shelfId) {
     moveBookToShelf(this.props.id, shelfId)
@@ -94,20 +94,14 @@ class Book extends Component {
   renderBookCover() {
     const { title, imageLinks, style, subtitle, } = this.props;
 
-    /**
-     * Build the styles for the book cover.
-     * TODO: Move styles to a higher up config.
-     * @type {Object}
-     */
+    // Build the styles for the book cover.
+    // TODO: Move styles to a higher up config.
     const bookCoverStyles = {
       ...style.bookCover,
       backgroundImage: `url(${imageLinks.thumbnail})`,
     };
 
-    /**
-     * Build the alternate text for the image
-     * @type {String}
-     */
+    // Build the alternate text for the image
     let altText = `Book: ${title}`;
 
     // Append the 'subtitle' of the book (to the altText) if one is present
