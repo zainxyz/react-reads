@@ -1,6 +1,6 @@
+import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import isEmpty from 'lodash';
 
 import SelectList from '../../common/selectList';
 
@@ -9,14 +9,14 @@ class Book extends Component {
     super(props);
 
     this.state = {
-      category: props.category,
+      shelf: props.shelf,
     };
 
     this.onSelectChange = this.onSelectChange.bind(this);
   }
 
   onSelectChange(value) {
-    this.setState({ category: value, });
+    this.setState({ shelf: value, });
   }
 
   getAuthors() {
@@ -62,7 +62,7 @@ class Book extends Component {
   renderBookCover() {
     const bookCoverStyles = {
       ...this.props.style.bookCover,
-      backgroundImage: `url(${this.props.bookCoverURL})`,
+      backgroundImage: `url(${this.props.imageLinks.thumbnail})`,
     };
 
     return (
@@ -77,10 +77,10 @@ class Book extends Component {
     return (
       <div className="book-shelf-changer">
         <SelectList
-          defaultValue="omg yes this is it!"
+          defaultValue="Move to shelf..."
           onBlur={this.onSelectChange}
           options={this.getSelectOptions()}
-          value={this.state.category}
+          value={this.state.shelf}
         />
       </div>
     );
@@ -105,16 +105,16 @@ Book.propTypes = {
     PropTypes.string,
     PropTypes.array
   ]),
-  bookCoverURL: PropTypes.string,
-  category: PropTypes.string,
+  imageLinks: PropTypes.object,
+  shelf: PropTypes.string,
   title: PropTypes.string,
   style: PropTypes.object,
 };
 
 Book.defaultProps = {
   authors: '',
-  bookCoverURL: '',
-  category: '',
+  imageLinks: {},
+  shelf: '',
   style: {
     bookCover: {
       width: '128px',
