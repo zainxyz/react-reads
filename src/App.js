@@ -16,13 +16,24 @@ class BooksApp extends Component {
     this.state = {
       query: '',
       shelves: {},
-      showSearchPage: true,
+      showSearchPage: false,
     };
 
     this.fetchedBooks = this.fetchedBooks.bind(this);
+    this.onShelfChange = this.onShelfChange.bind(this);
   }
 
   componentDidMount() {
+    this.fetchAllBooks();
+  }
+
+  onShelfChange(updatedBooks) {
+    if (!isEmpty(updatedBooks)) {
+      this.fetchAllBooks();
+    }
+  }
+
+  fetchAllBooks() {
     BooksAPI.getAll()
       .then(res => {
         const read = filterBooksListByShelfId(res, 'read');
@@ -57,7 +68,11 @@ class BooksApp extends Component {
 
     if (!isEmpty(shelves)) {
       return Object.keys(shelves).map(idx => (
-        <BookShelf {...shelves[idx]} key={shortid.generate()} />
+        <BookShelf
+          {...shelves[idx]}
+          key={shortid.generate()}
+          onShelfChange={this.onShelfChange}
+        />
       ));
     }
 

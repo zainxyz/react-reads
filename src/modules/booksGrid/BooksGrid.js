@@ -14,7 +14,10 @@ class BooksGrid extends Component {
     ) {
       return this.props.booksList.map((book) => (
         <li key={shortid.generate()}>
-          <Book {...book} />
+          <Book
+            {...book}
+            onShelfChange={this.props.onShelfChange}
+          />
         </li>
       ));
     }

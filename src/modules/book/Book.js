@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
 import SelectList from '../../common/selectList';
+import * as BooksAPI from '../../BooksAPI';
 
 class Book extends Component {
   constructor(props) {
@@ -16,6 +17,7 @@ class Book extends Component {
   }
 
   onSelectChange(value) {
+    this.updateBook(value);
     this.setState({ shelf: value, });
   }
 
@@ -57,6 +59,11 @@ class Book extends Component {
         "label": "None",
       }
     ];
+  }
+
+  updateBook(shelfId) {
+    BooksAPI.update(this.props.id, shelfId)
+      .then(res => this.props.onShelfChange(res));
   }
 
   renderBookCover() {
@@ -105,15 +112,18 @@ Book.propTypes = {
     PropTypes.string,
     PropTypes.array
   ]),
+  id: PropTypes.string.isRequired,
   imageLinks: PropTypes.object,
+  onShelfChange: PropTypes.func,
   shelf: PropTypes.string,
-  title: PropTypes.string,
   style: PropTypes.object,
+  title: PropTypes.string,
 };
 
 Book.defaultProps = {
   authors: '',
   imageLinks: {},
+  onShelfChange: () => {},
   shelf: '',
   style: {
     bookCover: {

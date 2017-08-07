@@ -7,7 +7,10 @@ class BookShelf extends Component {
   renderBooksGrid() {
     if (this.props.booksList) {
       return (
-        <BooksGrid booksList={this.props.booksList} />
+        <BooksGrid
+          booksList={this.props.booksList}
+          onShelfChange={this.props.onShelfChange}
+        />
       );
     }
     return null;
