@@ -5,6 +5,7 @@ import shortid from 'shortid';
 import { Link } from 'react-router-dom';
 
 import BookShelf from '../bookShelf';
+import Spinner from '../../common/loading';
 import UndefinedBooksListException from './UndefinedBooksListException';
 import { filterBooksListByShelfId } from '../../common/utils/bookUtils';
 import { getAllBooks } from '../../common/api/BooksAPI';
@@ -20,6 +21,8 @@ class MyReads extends Component {
 
     this.state = {
       shelves: {},
+      isLoading: true,
+      loadingText: 'Fetching books...',
     };
 
     // Bindings to 'this'
@@ -75,6 +78,7 @@ class MyReads extends Component {
               booksList: read,
             },
           },
+          isLoading: false,
         });
       })
       .catch((err) => {
@@ -114,36 +118,48 @@ class MyReads extends Component {
   }
 
   render() {
-    return (
-      <div className="list-books">
-        {this.renderTitle()}
-        <div className="list-books-content">
-          <div>
-            {this.renderBookShelves()}
+    if (!this.state.isLoading) {
+      return (
+        <div className="list-books">
+          {this.renderTitle()}
+          <div className="list-books-content">
+            <div>
+              {this.renderBookShelves()}
+            </div>
+          </div>
+          <div className="open-search">
+            <Link to="/search">
+              Add a book
+            </Link>
           </div>
         </div>
-        <div className="open-search">
-          <Link to="/search">
-            Add a book
-          </Link>
-        </div>
-      </div>
-    );
+      );
+    }
+
+    return <Spinner {...this.props.spinner} text={this.state.loadingText} />;
   }
 }
 
 MyReads.propTypes = {
-  title: PropTypes.string,
   shelfTitles: PropTypes.object,
+  spinner: PropTypes.object,
+  title: PropTypes.string,
 };
 
 MyReads.defaultProps = {
-  title: 'Zain\'s Reads',
   shelfTitles: {
     currentlyReading: 'Currently Enjoy Reading',
     wantToRead: 'I Want to Read',
     read: 'I\'ve Already Read',
   },
+  spinner: {
+    fillColor: '#F00B42', // FOOBAR
+    textColor: '#F00B42', // FOOBAR
+    style: {
+      marginTop: '200px',
+    },
+  },
+  title: 'Zain\'s Reads',
 };
 
 export default MyReads;

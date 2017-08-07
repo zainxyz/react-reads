@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
 import BooksGrid from '../booksGrid';
+import HelpText from '../../common/helpText';
 import SearchBar from '../../common/searchBar';
+import Spinner from '../../common/loading';
 import { searchBooks } from '../../common/api/BooksAPI';
 
 /**
@@ -17,7 +19,9 @@ class BookSearch extends Component {
 
     // Setting the default state
     this.state = {
-      fetchedBooks: [],
+      fetchedBooks: null,
+      isLoading: false,
+      loadingText: 'Fetching books...',
     };
 
     // Bindings to 'this'
@@ -35,6 +39,7 @@ class BookSearch extends Component {
       this.props.fetchedBooks &&
       typeof this.props.fetchedBooks === 'function'
     ) {
+      this.setState({ isLoading: true, });
       searchBooks(query, 10)
         .then(res => {
           const booksList = res.books ? res.books : [];
@@ -42,15 +47,15 @@ class BookSearch extends Component {
           if (!isEmpty(booksList) &&
             Array.isArray(booksList)
           ) {
-            this.setState({ fetchedBooks: booksList, });
+            this.setState({ fetchedBooks: booksList, isLoading: false, });
             this.props.fetchedBooks(booksList);
           } else {
-            this.setState({ fetchedBooks: [], });
+            this.setState({ fetchedBooks: [], isLoading: false, });
             this.props.fetchedBooks([]);
           }
         });
     } else if (query === '') {
-      this.setState({ fetchedBooks: [], });
+      this.setState({ fetchedBooks: null, isLoading: false, });
       this.props.fetchedBooks([]);
     }
 
@@ -77,11 +82,43 @@ class BookSearch extends Component {
    * @return {JSX}
    */
   renderSearchedBooksGrid() {
-    return (
-      <BooksGrid
-        booksList={this.state.fetchedBooks}
-      />
-    );
+    const { fetchedBooks, isLoading, loadingText, } = this.state;
+
+    // Display the loading spinner if we're currently fetching the books via the provided query
+    if (isLoading) {
+      return <Spinner {...this.props.spinner} text={loadingText} />;
+    }
+
+    // If we have finished fetching the books, and the fetchedBooks list isn't empty then
+    // display the BooksGrid.
+    if (!isLoading && !isEmpty(fetchedBooks)) {
+      return (
+        <BooksGrid
+          booksList={fetchedBooks}
+        />
+      );
+    }
+
+    // If the fetchedBooks list is an empty array, then that means we were not successful in fetching
+    // the list of books based on the given query
+    if (
+      Array.isArray(fetchedBooks) &&
+      fetchedBooks !== null
+    ) {
+      return (
+        <HelpText text={this.props.noBooksFoundText} />
+      );
+    }
+
+    // If the fetchedBooks list is null, meaning a search hasn't taken place, then display the user
+    // the beginning, 'Start by typing...' text
+    if (fetchedBooks === null) {
+      return (
+        <HelpText text={this.props.startTypingText} />
+      );
+    }
+
+    return null;
   }
 
   render() {
@@ -99,14 +136,33 @@ class BookSearch extends Component {
 BookSearch.propTypes = {
   closeSearchURL: PropTypes.string,
   fetchedBooks: PropTypes.func,
+  noBooksFoundText: PropTypes.array,
   placeholder: PropTypes.string,
+  spinner: PropTypes.object,
+  startTypingText: PropTypes.array,
   throttleSeconds: PropTypes.number,
 };
 
 BookSearch.defaultProps = {
   closeSearchURL: '',
   fetchedBooks: () => {},
+  noBooksFoundText: [
+    'Either your search term was off, or we were unable to find books for that search query.',
+    'Please try searching again...',
+    'Acceptable search terms are the following:',
+    "'Android', 'Art', 'Artificial Intelligence', 'Astronomy', 'Austen', 'Baseball', 'Basketball', 'Bhagat', 'Biography', 'Brief', 'Business', 'Camus', 'Cervantes', 'Christie', 'Classics', 'Comics', 'Cook', 'Cricket', 'Cycling', 'Desai', 'Design', 'Development', 'Digital Marketing', 'Drama', 'Drawing', 'Dumas', 'Education', 'Everything', 'Fantasy', 'Film', 'Finance', 'First', 'Fitness', 'Football', 'Future', 'Games', 'Gandhi', 'History', 'History', 'Homer', 'Horror', 'Hugo', 'Ibsen', 'Journey', 'Kafka', 'King', 'Lahiri', 'Larsson', 'Learn', 'Literary Fiction', 'Make', 'Manage', 'Marquez', 'Money', 'Mystery', 'Negotiate', 'Painting', 'Philosophy', 'Photography', 'Poetry', 'Production', 'Program Javascript', 'Programming', 'React', 'Redux', 'River', 'Robotics', 'Rowling', 'Satire', 'Science Fiction', 'Shakespeare', 'Singh', 'Swimming', 'Tale', 'Thrun', 'Time', 'Tolstoy', 'Travel', 'Ultimate', 'Virtual Reality', 'Web Development', 'iOS'"
+  ],
   placeholder: '',
+  spinner: {
+    fillColor: '#F00B42', // FOOBAR
+    textColor: '#F00B42', // FOOBAR
+    style: {
+      marginTop: '200px',
+    },
+  },
+  startTypingText: [
+    'Start by typing in the search field above...'
+  ],
   throttleSeconds: 1200,
 };
 
