@@ -11,6 +11,22 @@ module.exports = {
     "import"
   ],
   "rules": {
-    "react/forbid-prop-types": "off"
+    "react/forbid-prop-types": "off",
+    'valid-jsdoc': [
+      'warn', {
+        requireReturn: false,
+        prefer: {
+          returns: 'return',
+          yield: 'yields',
+        },
+        preferType: {
+          object: 'Object',
+          function: 'Function',
+          array: 'Array',
+        },
+        requireParamDescription: false,
+        requireReturnDescription: false,
+      }
+    ]
   }
 };

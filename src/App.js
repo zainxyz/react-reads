@@ -3,19 +3,47 @@ import React, { Component } from 'react';
 import './App.css';
 import * as BooksAPI from './BooksAPI';
 import Book from './modules/book';
+import { filterBooksListByShelfId } from './common/utils/bookUtils';
 
 class BooksApp extends Component {
-  state = {
-    /**
-     * TODO: Instead of using this state variable to keep track of which page
-     * we're on, use the URL in the browser's address bar. This will ensure that
-     * users can use the browser's back and forward buttons to navigate between
-     * pages, as well as provide a good URL they can bookmark and share.
-     */
-    showSearchPage: true,
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      /**
+       * TODO: Instead of using this state variable to keep track of which page
+       * we're on, use the URL in the browser's address bar. This will ensure that
+       * users can use the browser's back and forward buttons to navigate between
+       * pages, as well as provide a good URL they can bookmark and share.
+       */
+      showSearchPage: true,
+      shelves: {
+        currentlyReading: [],
+        wantToRead: [],
+        read: [],
+      },
+    };
+  }
+
+  componentDidMount() {
+    BooksAPI.getAll()
+      .then(res => {
+        const read = filterBooksListByShelfId(res, 'read');
+        const currentlyReading = filterBooksListByShelfId(res, 'currentlyReading');
+        const wantToRead = filterBooksListByShelfId(res, 'wantToRead');
+
+        this.setState({
+          shelves: {
+            currentlyReading,
+            wantToRead,
+            read,
+          },
+        });
+      });
   }
 
   render() {
+    console.log('BooksApp : shelves : ', this.state.shelves);
     return (
       <div className="app">
         {this.state.showSearchPage ? (

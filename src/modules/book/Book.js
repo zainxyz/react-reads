@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import isEmpty from 'lodash';
 
 import SelectList from '../../common/selectList';
 
@@ -23,7 +24,8 @@ class Book extends Component {
 
     if (
       this.props.authors &&
-      Array.isArray(this.props.authors)
+      Array.isArray(this.props.authors) &&
+      !isEmpty(this.props.authors)
     ) {
       authors = this.props.authors.reduce((res, author) =>
         (
