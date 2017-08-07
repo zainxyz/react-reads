@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
 import SelectList from '../../common/selectList';
-import * as BooksAPI from '../../BooksAPI';
+import { moveBookToShelf } from '../../common/api/BooksAPI';
 
 class Book extends Component {
   constructor(props) {
@@ -62,7 +62,7 @@ class Book extends Component {
   }
 
   updateBook(shelfId) {
-    BooksAPI.update(this.props.id, shelfId)
+    moveBookToShelf(this.props.id, shelfId)
       .then(res => this.props.onShelfChange(res));
   }
 

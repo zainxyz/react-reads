@@ -1,10 +1,10 @@
+import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import isEmpty from 'lodash/isEmpty';
 
-import * as BooksAPI from '../../BooksAPI';
-import SearchBar from '../../common/searchBar';
 import BooksGrid from '../booksGrid';
+import SearchBar from '../../common/searchBar';
+import { searchBooks } from '../../common/api/BooksAPI';
 
 class BookSearch extends Component {
   constructor(props) {
@@ -23,13 +23,15 @@ class BookSearch extends Component {
       this.props.fetchedBooks &&
       typeof this.props.fetchedBooks === 'function'
     ) {
-      BooksAPI.search(query, 10)
+      searchBooks(query, 10)
         .then(res => {
-          if (!isEmpty(res) &&
-            Array.isArray(res)
+          const booksList = res.books ? res.books : [];
+
+          if (!isEmpty(booksList) &&
+            Array.isArray(booksList)
           ) {
-            this.setState({ fetchedBooks: res, });
-            this.props.fetchedBooks(res);
+            this.setState({ fetchedBooks: booksList, });
+            this.props.fetchedBooks(booksList);
           } else {
             this.setState({ fetchedBooks: [], });
             this.props.fetchedBooks([]);

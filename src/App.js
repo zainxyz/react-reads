@@ -5,7 +5,7 @@ import shortid from 'shortid';
 import { BrowserRouter, Link, Route } from 'react-router-dom';
 
 import './App.css';
-import * as BooksAPI from './BooksAPI';
+import { getAllBooks } from './common/api/BooksAPI';
 import BookShelf from './modules/bookShelf';
 import BookSearch from './modules/bookSearch';
 import { filterBooksListByShelfId } from './common/utils/bookUtils';
@@ -37,11 +37,12 @@ class BooksApp extends Component {
   }
 
   fetchAllBooks() {
-    BooksAPI.getAll()
+    getAllBooks()
       .then(res => {
-        const read = filterBooksListByShelfId(res, 'read');
-        const currentlyReading = filterBooksListByShelfId(res, 'currentlyReading');
-        const wantToRead = filterBooksListByShelfId(res, 'wantToRead');
+        const booksList = res.books ? res.books : [];
+        const read = filterBooksListByShelfId(booksList, 'read');
+        const currentlyReading = filterBooksListByShelfId(booksList, 'currentlyReading');
+        const wantToRead = filterBooksListByShelfId(booksList, 'wantToRead');
 
         this.setState({
           shelves: {

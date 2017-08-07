@@ -1,0 +1,45 @@
+import { GET, PUT, POST } from './HTTP';
+
+/** @type {String} The Main API url. */
+const APIUrl = 'https://reactnd-books-api.udacity.com';
+
+/** @type {String} A uniquely generated token for storing bookshelf data on the backend server. */
+let token = localStorage.token || Math.random().toString(36).substr(-8);
+
+/** @type {Object} Add-on headers for the booksAPI calls */
+const headers = {
+  Authorization: token,
+};
+
+/**
+ * Fetch a book by a given bookId
+ * @param  {String} bookId The id of the book to fetch
+ * @return {Object}
+ */
+export const getBookById = bookId =>
+  GET({ url: `${APIUrl}/books/${bookId}`, headers, });
+
+/**
+ * Fetch all of the books at once
+ * @return {Object} List of all the books
+ */
+export const getAllBooks = () =>
+  GET({ url: `${APIUrl}/books`, headers, });
+
+/**
+ * Move a given book to a different bookshelf
+ * @param  {String} bookId The id of the book to update
+ * @param  {String} shelf  The updated shelf name for the given bookId
+ * @return {Object}
+ */
+export const moveBookToShelf = (bookId, shelf) =>
+  PUT({ url: `${APIUrl}/books/${bookId}`, headers, body: { shelf, }, });
+
+/**
+ * Search for books given a search string
+ * @param  {Object} query      The search string
+ * @param  {Number} maxResults The maximum number of results requested
+ * @return {Array|Object}
+ */
+export const searchBooks = (query, maxResults) =>
+  POST({ url: `${APIUrl}/search`, headers, body: { query, maxResults, }, });
