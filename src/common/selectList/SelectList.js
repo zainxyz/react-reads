@@ -1,16 +1,28 @@
+import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import shortid from 'shortid';
 
 import SelectListOption from './SelectListOption';
 
+/**
+ * Class for rendering a select list drop-down based on the number of passed-in select options
+ * @class
+ * @extends {Component}
+ */
 class SelectList extends Component {
   constructor(props) {
     super(props);
 
+    // Bindings to 'this'
     this.onBlur = this.onBlur.bind(this);
   }
 
+  /**
+   * Upon each successful change of the select option call the passed-in 'onBlur()'
+   * @param  {Event}                e The event
+   * @return {Function|null}
+   */
   onBlur(e) {
     if (
       this.props.onBlur &&
@@ -21,12 +33,15 @@ class SelectList extends Component {
     return null;
   }
 
+  /**
+   * Render all of the passed-in select list's options
+   * @return {JSX}
+   */
   renderOptions() {
-    if (
-      this.props.options &&
-      Array.isArray(this.props.options)
-    ) {
-      return this.props.options.map(option => (
+    const { options, } = this.props;
+
+    if (!isEmpty(options)) {
+      return options.map(option => (
         <SelectListOption
           disabled={option.disabled}
           key={shortid.generate()}

@@ -6,13 +6,23 @@ import './App.css';
 import BookSearch from './modules/bookSearch';
 import MyReads from './modules/myReads';
 
+/**
+ * Class for creating the main Books Application
+ * @class
+ * @extends {Component}
+ */
 class BooksApp extends Component {
   constructor(props) {
     super(props);
 
+    // Bindings to 'this'
     this.renderBookSearch = this.renderBookSearch.bind(this);
   }
 
+  /**
+   * Render the book search route
+   * @return {JSX}
+   */
   renderBookSearch() {
     return (
       <BookSearch

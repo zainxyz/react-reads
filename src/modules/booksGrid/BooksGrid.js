@@ -1,17 +1,22 @@
+import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import isEmpty from 'lodash/isEmpty';
 import shortid from 'shortid';
 
 import Book from '../book';
 
+/**
+ * Class for rendering a collection of books in a grid.
+ * @class
+ * @extends {Component}
+ */
 class BooksGrid extends Component {
+  /**
+   * Render an array of books based on the passed-in booksList
+   * @return {JSX|null}
+   */
   renderBooks() {
-    if (
-      this.props.booksList &&
-      Array.isArray(this.props.booksList) &&
-      !isEmpty(this.props.booksList)
-    ) {
+    if (!isEmpty(this.props.booksList)) {
       return this.props.booksList.map((book) => (
         <li key={shortid.generate()}>
           <Book
@@ -35,6 +40,11 @@ class BooksGrid extends Component {
 
 BooksGrid.propTypes = {
   booksList: PropTypes.array.isRequired,
+  onShelfChange: PropTypes.func,
+};
+
+BooksGrid.defaultProps = {
+  onShelfChange: () => {},
 };
 
 export default BooksGrid;

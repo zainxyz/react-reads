@@ -3,7 +3,16 @@ import React, { Component } from 'react';
 
 import BooksGrid from '../booksGrid';
 
+/**
+ * Class for rendering a bookshelf
+ * @class
+ * @extends {Component}
+ */
 class BookShelf extends Component {
+  /**
+   * Render a books grid based on the given list of books
+   * @return {JSX|null}
+   */
   renderBooksGrid() {
     if (this.props.booksList) {
       return (
@@ -16,6 +25,10 @@ class BookShelf extends Component {
     return null;
   }
 
+  /**
+   * Render the title of the bookshelf
+   * @return {JSX|null}
+   */
   renderTitle() {
     if (this.props.title) {
       return <h2 className="bookshelf-title">{this.props.title}</h2>;

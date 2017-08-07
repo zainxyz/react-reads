@@ -5,31 +5,42 @@ import React, { Component } from 'react';
 import SelectList from '../../common/selectList';
 import { moveBookToShelf } from '../../common/api/BooksAPI';
 
+/**
+ * Class to render a single Book
+ * @class
+ * @extends {Component}
+ */
 class Book extends Component {
   constructor(props) {
     super(props);
 
+    // Set the initial state
     this.state = {
       shelf: props.shelf,
     };
 
+    // Bindings to 'this'
     this.onSelectChange = this.onSelectChange.bind(this);
   }
 
-  onSelectChange(value) {
-    this.updateBook(value);
-    this.setState({ shelf: value, });
+  /**
+   * On change of each of the book's shelf name (shelfId)
+   * @param  {String} shelfId The id of the new shelf
+   */
+  onSelectChange(shelfId) {
+    this.updateBook(shelfId);
+    this.setState({ shelf: shelfId, });
   }
 
+  /**
+   * Convert the given list of authors into a single string for better readability
+   * @return {String|null}
+   */
   getAuthors() {
-    let authors = this.props.authors;
+    const { authors, } = this.props;
 
-    if (
-      this.props.authors &&
-      Array.isArray(this.props.authors) &&
-      !isEmpty(this.props.authors)
-    ) {
-      authors = this.props.authors.reduce((res, author) =>
+    if (!isEmpty(authors)) {
+      return authors.reduce((res, author) =>
         (
           res ? `${res}, ${author}` : `${author}`
         ),
@@ -37,9 +48,15 @@ class Book extends Component {
       );
     }
 
-    return authors;
+    return null;
   }
 
+  /**
+   * Get the select options for the drop-down.
+   * TODO: For now these options reside in this (Book) class, maybe in future these can be
+   * dynamically generated based on a list of available bookShelf Ids?
+   * @return {Array}
+   */
   getSelectOptions() {
     return [
       {
@@ -61,12 +78,25 @@ class Book extends Component {
     ];
   }
 
+  /**
+   * Update the book - to - shelf association
+   * @param  {String} shelfId The id of the new shelf
+   */
   updateBook(shelfId) {
     moveBookToShelf(this.props.id, shelfId)
       .then(res => this.props.onShelfChange(res));
   }
 
+  /**
+   * Render the book covers
+   * @return {JSX}
+   */
   renderBookCover() {
+    /**
+     * Build the styles for the book cover.
+     * TODO: Move styles to a higher up config.
+     * @type {Object}
+     */
     const bookCoverStyles = {
       ...this.props.style.bookCover,
       backgroundImage: `url(${this.props.imageLinks.thumbnail})`,
@@ -80,6 +110,10 @@ class Book extends Component {
     );
   }
 
+  /**
+   * Render a book shelf changer (a simple select input)
+   * @return {JSX}
+   */
   renderBookShelfChanger() {
     return (
       <div className="book-shelf-changer">

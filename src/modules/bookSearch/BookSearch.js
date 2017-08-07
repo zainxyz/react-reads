@@ -6,17 +6,29 @@ import BooksGrid from '../booksGrid';
 import SearchBar from '../../common/searchBar';
 import { searchBooks } from '../../common/api/BooksAPI';
 
+/**
+ * Class for searching for a book given a search term
+ * @class
+ * @extends {Component}
+ */
 class BookSearch extends Component {
   constructor(props) {
     super(props);
 
+    // Setting the default state
     this.state = {
       fetchedBooks: [],
     };
 
+    // Bindings to 'this'
     this.fetchBooksByQuery = this.fetchBooksByQuery.bind(this);
   }
 
+  /**
+   * Fetch a list of books based on the given query
+   * @param  {String}        query The given query to search
+   * @return {Function|null}
+   */
   fetchBooksByQuery(query) {
     if (
       query &&
@@ -45,6 +57,10 @@ class BookSearch extends Component {
     return null;
   }
 
+  /**
+   * Render a search bar atop the current page
+   * @return {JSX}
+   */
   renderSearchBar() {
     return (
       <SearchBar
@@ -56,6 +72,10 @@ class BookSearch extends Component {
     );
   }
 
+  /**
+   * Render a books grid for the fetched books
+   * @return {JSX}
+   */
   renderSearchedBooksGrid() {
     return (
       <BooksGrid
