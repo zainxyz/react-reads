@@ -1,10 +1,12 @@
 import isEmpty from 'lodash/isEmpty';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import shortid from 'shortid';
 
 import './App.css';
 import * as BooksAPI from './BooksAPI';
 import BookShelf from './modules/bookShelf';
+import BookSearch from './modules/bookSearch';
 import { filterBooksListByShelfId } from './common/utils/bookUtils';
 
 class BooksApp extends Component {
@@ -12,9 +14,12 @@ class BooksApp extends Component {
     super(props);
 
     this.state = {
-      showSearchPage: true,
+      query: '',
       shelves: {},
+      showSearchPage: true,
     };
+
+    this.fetchedBooks = this.fetchedBooks.bind(this);
   }
 
   componentDidMount() {
@@ -43,6 +48,10 @@ class BooksApp extends Component {
       });
   }
 
+  fetchedBooks(booksList) {
+    console.log('fetchedBooks : ', booksList);
+  }
+
   renderBookShelves() {
     const { shelves, } = this.state;
 
@@ -59,17 +68,10 @@ class BooksApp extends Component {
     return (
       <div className="app">
         {this.state.showSearchPage ? (
-          <div className="search-books">
-            <div className="search-books-bar">
-              <a className="close-search" onClick={() => this.setState({ showSearchPage: false, })}>Close</a>
-              <div className="search-books-input-wrapper">
-                <input type="text" placeholder="Search by title or author" />
-              </div>
-            </div>
-            <div className="search-books-results">
-              <ol className="books-grid" />
-            </div>
-          </div>
+          <BookSearch
+            fetchedBooks={this.fetchedBooks}
+            placeholder={this.props.searchPlaceholder}
+          />
         ) : (
           <div className="list-books">
             <div className="list-books-title">
@@ -89,5 +91,13 @@ class BooksApp extends Component {
     );
   }
 }
+
+BooksApp.propTypes = {
+  searchPlaceholder: PropTypes.string,
+};
+
+BooksApp.defaultProps = {
+  searchPlaceholder: 'Search a book by title or author...',
+};
 
 export default BooksApp;

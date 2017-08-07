@@ -1,22 +1,14 @@
-import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import shortid from 'shortid';
 
-import Book from '../book';
+import BooksGrid from '../booksGrid';
 
 class BookShelf extends Component {
-  renderBooks() {
-    if (
-      this.props.booksList &&
-      Array.isArray(this.props.booksList) &&
-      !isEmpty(this.props.booksList)
-    ) {
-      return this.props.booksList.map((book) => (
-        <li key={shortid.generate()}>
-          <Book {...book} />
-        </li>
-      ));
+  renderBooksGrid() {
+    if (this.props.booksList) {
+      return (
+        <BooksGrid booksList={this.props.booksList} />
+      );
     }
     return null;
   }
@@ -33,9 +25,7 @@ class BookShelf extends Component {
       <div className="bookshelf">
         {this.renderTitle()}
         <div className="bookshelf-books">
-          <ol className="books-grid">
-            {this.renderBooks()}
-          </ol>
+          {this.renderBooksGrid()}
         </div>
       </div>
     );

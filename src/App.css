@@ -64,7 +64,7 @@ body, .app {
 
 /* search page */
 
-.search-books-bar {
+.search-bar {
   position: fixed;
   width: 100%;
   top: 0;
@@ -73,16 +73,19 @@ body, .app {
   display: flex;
   box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 0 6px rgba(0,0,0,0.23);
 }
-.search-books-input-wrapper {
+.search-input-wrapper {
   flex: 1;
   background: #e9e;
 }
-.search-books-bar input {
+.search-bar input {
   width: 100%;
   padding: 15px 10px;
   font-size: 1.25em;
   border: none;
   outline: none;
+}
+.search-results {
+  margin: 100px 0 0;
 }
 
 .close-search {
