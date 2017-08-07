@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import throttle from 'lodash/throttle';
+import {Link} from 'react-router-dom';
 
 /**
  * A generic search-bar that outputs the user's typed in value via a getQuery() function call,
@@ -40,7 +41,9 @@ class SearchBar extends Component {
   render() {
     return (
       <div className="search-bar">
-        <a className="close-search" onClick={() => this.setState({ showSearchPage: false, })}>Close</a>
+        <Link to={this.props.closeSearchURL} className="close-search">
+          Close
+        </Link>
         {this.renderSearchInput()}
       </div>
     );
@@ -48,12 +51,14 @@ class SearchBar extends Component {
 }
 
 SearchBar.propTypes = {
-  placeholder: PropTypes.string,
+  closeSearchURL: PropTypes.string,
   getQuery: PropTypes.func.isRequired,
+  placeholder: PropTypes.string,
   throttleSeconds: PropTypes.number,
 };
 
 SearchBar.defaultProps = {
+  closeSearchURL: '/',
   placeholder: '',
   throttleSeconds: 1000,
 };

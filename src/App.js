@@ -2,6 +2,7 @@ import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import shortid from 'shortid';
+import { BrowserRouter, Link, Route } from 'react-router-dom';
 
 import './App.css';
 import * as BooksAPI from './BooksAPI';
@@ -21,6 +22,8 @@ class BooksApp extends Component {
 
     this.fetchedBooks = this.fetchedBooks.bind(this);
     this.onShelfChange = this.onShelfChange.bind(this);
+    this.renderBookSearch = this.renderBookSearch.bind(this);
+    this.renderMyReads = this.renderMyReads.bind(this);
   }
 
   componentDidMount() {
@@ -79,40 +82,58 @@ class BooksApp extends Component {
     return null;
   }
 
+  renderBookSearch() {
+    return (
+      <BookSearch
+        closeSearchURL={this.props.closeSearchURL}
+        fetchedBooks={this.fetchedBooks}
+        placeholder={this.props.searchPlaceholder}
+      />
+    );
+  }
+
+  renderMyReads() {
+    return (
+      <div className="list-books">
+        <div className="list-books-title">
+          <h1>{this.props.title}</h1>
+        </div>
+        <div className="list-books-content">
+          <div>
+            {this.renderBookShelves()}
+          </div>
+        </div>
+        <div className="open-search">
+          <Link to="/search">
+            Add a book
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   render() {
     return (
-      <div className="app">
-        {this.state.showSearchPage ? (
-          <BookSearch
-            fetchedBooks={this.fetchedBooks}
-            placeholder={this.props.searchPlaceholder}
-          />
-        ) : (
-          <div className="list-books">
-            <div className="list-books-title">
-              <h1>MyReads</h1>
-            </div>
-            <div className="list-books-content">
-              <div>
-                {this.renderBookShelves()}
-              </div>
-            </div>
-            <div className="open-search">
-              <a onClick={() => this.setState({ showSearchPage: true, })}>Add a book</a>
-            </div>
-          </div>
-        )}
-      </div>
+      <BrowserRouter basename="/">
+        <div className="app">
+          <Route exact path="/" render={this.renderMyReads} />
+          <Route path="/search" render={this.renderBookSearch} />
+        </div>
+      </BrowserRouter>
     );
   }
 }
 
 BooksApp.propTypes = {
+  closeSearchURL: PropTypes.string,
   searchPlaceholder: PropTypes.string,
+  title: PropTypes.string,
 };
 
 BooksApp.defaultProps = {
+  closeSearchURL: '/',
   searchPlaceholder: 'Search a book by title or author...',
+  title: 'Zain\'s Reads',
 };
 
 export default BooksApp;

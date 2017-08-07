@@ -46,6 +46,7 @@ class BookSearch extends Component {
   renderSearchBar() {
     return (
       <SearchBar
+        closeSearchURL={this.props.closeSearchURL}
         getQuery={this.fetchBooksByQuery}
         placeholder={this.props.placeholder}
         throttleSeconds={this.props.throttleSeconds}
@@ -75,11 +76,13 @@ class BookSearch extends Component {
 
 BookSearch.propTypes = {
   placeholder: PropTypes.string,
+  closeSearchURL: PropTypes.string,
   fetchedBooks: PropTypes.func.isRequired,
   throttleSeconds: PropTypes.number,
 };
 
 BookSearch.defaultProps = {
+  closeSearchURL: '',
   placeholder: '',
   throttleSeconds: 1200,
 };
