@@ -1,10 +1,19 @@
+import isEmpty from 'lodash/isEmpty';
+
 import { GET, PUT, POST } from './HTTP';
 
 /** @type {String} The Main API url. */
 const APIUrl = 'https://reactnd-books-api.udacity.com';
 
 /** @type {String} A uniquely generated token for storing bookshelf data on the backend server. */
-let token = localStorage.token || Math.random().toString(36).substr(-8);
+let token = localStorage.token;
+
+/**
+ * If token is not present, then set one in the localStorage by generating a new token.
+ */
+if (isEmpty(token)) {
+  token = localStorage.token = Math.random().toString(36).substr(-8);
+}
 
 /** @type {Object} Add-on headers for the booksAPI calls */
 const headers = {

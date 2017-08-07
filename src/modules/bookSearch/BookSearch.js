@@ -77,14 +77,15 @@ class BookSearch extends Component {
 }
 
 BookSearch.propTypes = {
-  placeholder: PropTypes.string,
   closeSearchURL: PropTypes.string,
-  fetchedBooks: PropTypes.func.isRequired,
+  fetchedBooks: PropTypes.func,
+  placeholder: PropTypes.string,
   throttleSeconds: PropTypes.number,
 };
 
 BookSearch.defaultProps = {
   closeSearchURL: '',
+  fetchedBooks: () => {},
   placeholder: '',
   throttleSeconds: 1200,
 };
