@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import BooksGrid from '../booksGrid';
+import BooksGrid from 'common/booksGrid';
 
 /**
  * Class for rendering a bookshelf

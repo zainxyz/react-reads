@@ -11,8 +11,19 @@ module.exports = {
     "import"
   ],
   "rules": {
-    "react/forbid-prop-types": "off",
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "dependencies": [
+          "api/**",
+          "common/**",
+          "modules/**",
+          "utils/**"
+        ],
+      }
+    ],
     "no-template-curly-in-string": "off",
+    "react/forbid-prop-types": "off",
     "valid-jsdoc": [
       "warn", {
         "requireReturn": false,

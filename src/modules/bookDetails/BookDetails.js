@@ -3,19 +3,19 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import DetailsList from '../../common/detailsList';
-import HomeIcon from '../../common/icons/HomeIcon';
-import Spinner from '../../common/loading';
+import DetailsList from 'common/detailsList';
+import HomeIcon from 'common/icons/HomeIcon';
+import Spinner from 'common/loading';
 import UndefinedBookDetailsException from './UndefinedBookDetailsException';
-import { constants as bookConstants } from '../../common/book';
-import { formatDate } from '../../utils/dateUtils';
-import { getBookById } from '../../api/booksAPI';
-import { transformArrayIntoString } from '../../utils/arrayUtils';
+import { constants as bookConstants } from 'common/book';
+import { formatDate } from 'utils/dateUtils';
+import { getBookById } from 'api/booksAPI';
+import { transformArrayIntoString } from 'utils/arrayUtils';
 import {
   buildBookCoverImageUrl,
   getBookISBN,
   translateBookShelfName,
-} from '../../utils/bookUtils';
+} from 'utils/bookUtils';
 
 class BookDetails extends Component {
   constructor(props) {

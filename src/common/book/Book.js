@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import SelectList from '../../common/selectList';
-import { moveBookToShelf } from '../../api/booksAPI';
-import { transformArrayIntoString } from '../../utils/arrayUtils';
+import SelectList from 'common/selectList';
+import { moveBookToShelf } from 'api/booksAPI';
+import { transformArrayIntoString } from 'utils/arrayUtils';
 
 /**
  * Class to render a single Book

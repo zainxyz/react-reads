@@ -2,11 +2,11 @@ import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import BooksGrid from '../../common/booksGrid';
-import HelpText from '../../common/helpText';
-import SearchBar from '../../common/searchBar';
-import Spinner from '../../common/loading';
-import { searchBooks } from '../../api/booksAPI';
+import BooksGrid from 'common/booksGrid';
+import HelpText from 'common/helpText';
+import SearchBar from 'common/searchBar';
+import Spinner from 'common/loading';
+import { searchBooks } from 'api/booksAPI';
 
 /**
  * Class for searching for a book given a search term

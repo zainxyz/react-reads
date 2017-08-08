@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import shortid from 'shortid';
 
-import Book from '../book';
+import Book from 'common/book';
 
 /**
  * Class for rendering a collection of books in a grid.

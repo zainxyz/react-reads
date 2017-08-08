@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import shortid from 'shortid';
 
 import DetailsListItem from './DetailsListItem';
-import { textReplacement } from '../../utils/stringUtils';
+import { textReplacement } from 'utils/stringUtils';
 
 class DetailsList extends Component {
   renderListItems(definitions, item) {

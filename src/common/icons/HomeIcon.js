@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import SvgIcon from '../icons/SvgIcon';
+import SvgIcon from 'common/icons/SvgIcon';
 
 const HomeIcon = (props) => {
   const {

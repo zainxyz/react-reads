@@ -3,9 +3,9 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 
 import './App.css';
-import BookSearch from './modules/bookSearch';
-import MyReads from './modules/myReads';
-import BookDetails from './modules/bookDetails';
+import BookDetails from 'modules/bookDetails';
+import BookSearch from 'modules/bookSearch';
+import MyReads from 'modules/myReads';
 
 /**
  * Class for creating the main Books Application
