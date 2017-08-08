@@ -22,6 +22,7 @@ class BooksGrid extends Component {
           <Book
             {...book}
             onShelfChange={this.props.onShelfChange}
+            viewDetailsLink={this.props.viewDetailsLink}
           />
         </li>
       ));
@@ -41,10 +42,12 @@ class BooksGrid extends Component {
 BooksGrid.propTypes = {
   booksList: PropTypes.array.isRequired,
   onShelfChange: PropTypes.func,
+  viewDetailsLink: PropTypes.bool,
 };
 
 BooksGrid.defaultProps = {
   onShelfChange: () => {},
+  viewDetailsLink: false,
 };
 
 export default BooksGrid;

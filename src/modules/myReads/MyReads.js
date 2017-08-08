@@ -31,6 +31,9 @@ class MyReads extends Component {
   }
 
   componentDidMount() {
+    // Make sure we jump to the top of the page.
+    window.scrollTo(0, 0);
+
     this.fetchAllBooks();
   }
 

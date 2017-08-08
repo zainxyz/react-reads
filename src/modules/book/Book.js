@@ -126,16 +126,20 @@ class Book extends Component {
   }
 
   renderDetailsLink() {
-    const { id, } = this.props;
+    const { id, viewDetailsLink, } = this.props;
 
-    return (
-      <Link
-        className="nav-link book-details-link"
-        to={`/book/${id}`}
-      >
-        View Details
-      </Link>
-    );
+    if (viewDetailsLink) {
+      return (
+        <Link
+          className="nav-link book-details-link"
+          to={`/book/${id}`}
+        >
+          View Details
+        </Link>
+      );
+    }
+
+    return null;
   }
 
   render() {
@@ -164,6 +168,7 @@ Book.propTypes = {
   style: PropTypes.object,
   subtitle: PropTypes.string,
   title: PropTypes.string,
+  viewDetailsLink: PropTypes.bool,
 };
 
 Book.defaultProps = {
@@ -178,6 +183,7 @@ Book.defaultProps = {
     },
   },
   subtitle: '',
+  viewDetailsLink: false,
   title: '',
 };
 

@@ -14,11 +14,11 @@ class HelpText extends Component {
    * @return {JSX}
    */
   renderTextList() {
-    const { text, } = this.props;
+    const { style, text, } = this.props;
 
     if (!isEmpty(text)) {
       return text.map(text => (
-        <p key={shortid.generate()}>{text}</p>
+        <p key={shortid.generate()} style={style.singleLine}>{text}</p>
       ));
     }
 
@@ -55,6 +55,9 @@ HelpText.defaultProps = {
       width: '80%',
     },
     lineHeight: 1.2,
+    singleLine: {
+      margin: '20px 0',
+    },
   },
 };
 

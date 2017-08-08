@@ -19,6 +19,7 @@ class BookShelf extends Component {
         <BooksGrid
           booksList={this.props.booksList}
           onShelfChange={this.props.onShelfChange}
+          viewDetailsLink
         />
       );
     }

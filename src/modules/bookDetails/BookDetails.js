@@ -31,6 +31,9 @@ class BookDetails extends Component {
   componentDidMount() {
     const { match: { params: { bookId, }, }, } = this.props;
 
+    // Make sure we jump to the top of the page.
+    window.scrollTo(0, 0);
+
     if (!isEmpty(bookId)) {
       getBookById(bookId)
         .then((res) => {

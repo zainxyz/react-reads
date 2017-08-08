@@ -28,17 +28,18 @@ class BookSearch extends Component {
     this.fetchBooksByQuery = this.fetchBooksByQuery.bind(this);
   }
 
+  componentDidMount() {
+    // Make sure we jump to the top of the page.
+    window.scrollTo(0, 0);
+  }
+
   /**
    * Fetch a list of books based on the given query
    * @param  {string}        query The given query to search
    * @return {Function|null}
    */
   fetchBooksByQuery(query) {
-    if (
-      query &&
-      this.props.fetchedBooks &&
-      typeof this.props.fetchedBooks === 'function'
-    ) {
+    if (query) {
       this.setState({ isLoading: true, });
       searchBooks(query, 10)
         .then(res => {
@@ -48,15 +49,12 @@ class BookSearch extends Component {
             Array.isArray(booksList)
           ) {
             this.setState({ fetchedBooks: booksList, isLoading: false, });
-            this.props.fetchedBooks(booksList);
           } else {
             this.setState({ fetchedBooks: [], isLoading: false, });
-            this.props.fetchedBooks([]);
           }
         });
     } else if (query === '') {
       this.setState({ fetchedBooks: null, isLoading: false, });
-      this.props.fetchedBooks([]);
     }
 
     return null;
@@ -135,7 +133,6 @@ class BookSearch extends Component {
 
 BookSearch.propTypes = {
   closeSearchURL: PropTypes.string,
-  fetchedBooks: PropTypes.func,
   noBooksFoundText: PropTypes.array,
   placeholder: PropTypes.string,
   spinner: PropTypes.object,
@@ -145,7 +142,6 @@ BookSearch.propTypes = {
 
 BookSearch.defaultProps = {
   closeSearchURL: '',
-  fetchedBooks: () => {},
   noBooksFoundText: [
     'Either your search term was off, or we were unable to find books for that search query.',
     'Please try searching again...',
