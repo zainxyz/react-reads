@@ -5,6 +5,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import './App.css';
 import BookSearch from './modules/bookSearch';
 import MyReads from './modules/myReads';
+import BookDetails from './modules/bookDetails';
 
 /**
  * Class for creating the main Books Application
@@ -38,6 +39,7 @@ class BooksApp extends Component {
         <div className="app">
           <Route exact path="/" component={MyReads} />
           <Route path="/search" render={this.renderBookSearch} />
+          <Route path="/book/:bookId" component={BookDetails} />
         </div>
       </BrowserRouter>
     );

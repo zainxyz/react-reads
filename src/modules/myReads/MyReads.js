@@ -108,7 +108,7 @@ class MyReads extends Component {
   renderTitle() {
     if (this.props.title) {
       return (
-        <div className="list-books-title">
+        <div className="page-title">
           <h1>{this.props.title}</h1>
         </div>
       );
@@ -153,8 +153,8 @@ MyReads.defaultProps = {
     read: 'I\'ve Already Read',
   },
   spinner: {
-    fillColor: '#F00B42', // FOOBAR
-    textColor: '#F00B42', // FOOBAR
+    fillColor: '#10aded', /* LOADED */
+    textColor: '#10aded', /* LOADED */
     style: {
       marginTop: '200px',
     },

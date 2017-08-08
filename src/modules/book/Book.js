@@ -1,9 +1,11 @@
 import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 import SelectList from '../../common/selectList';
 import { moveBookToShelf } from '../../common/api/BooksAPI';
+import { transformBookAuthorsToString } from '../../common/utils/bookUtils';
 
 /**
  * Class to render a single Book
@@ -30,25 +32,6 @@ class Book extends Component {
   onSelectChange(shelfId) {
     this.updateBook(shelfId);
     this.setState({ shelf: shelfId, });
-  }
-
-  /**
-   * Convert the given list of authors into a single string for better readability
-   * @return {string|null}
-   */
-  getAuthors() {
-    const { authors, } = this.props;
-
-    if (!isEmpty(authors)) {
-      return authors.reduce((res, author) =>
-        (
-          res ? `${res}, ${author}` : `${author}`
-        ),
-        ''
-      );
-    }
-
-    return null;
   }
 
   /**
@@ -98,8 +81,13 @@ class Book extends Component {
     // TODO: Move styles to a higher up config.
     const bookCoverStyles = {
       ...style.bookCover,
-      backgroundImage: `url(${imageLinks.thumbnail})`,
     };
+
+    // Create the image source link
+    const imgSrc =
+      imageLinks &&
+      imageLinks.thumbnail ?
+      imageLinks.thumbnail : '';
 
     // Build the alternate text for the image
     let altText = `Book: ${title}`;
@@ -115,6 +103,7 @@ class Book extends Component {
         className="book-cover"
         style={bookCoverStyles}
         title={title}
+        src={imgSrc}
       />
     );
   }
@@ -136,7 +125,22 @@ class Book extends Component {
     );
   }
 
+  renderDetailsLink() {
+    const { id, } = this.props;
+
+    return (
+      <Link
+        className="book-details-link"
+        to={`/book/${id}`}
+      >
+        View Details
+      </Link>
+    );
+  }
+
   render() {
+    const { authors, } = this.props;
+
     return (
       <div className="book">
         <div className="book-top">
@@ -144,17 +148,15 @@ class Book extends Component {
           {this.renderBookShelfChanger()}
         </div>
         <div className="book-title">{this.props.title}</div>
-        <div className="book-authors">{this.getAuthors()}</div>
+        <div className="book-authors">{transformBookAuthorsToString(authors)}</div>
+        <div className="book-details">{this.renderDetailsLink()}</div>
       </div>
     );
   }
 }
 
 Book.propTypes = {
-  authors: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.array
-  ]),
+  authors: PropTypes.array,
   id: PropTypes.string.isRequired,
   imageLinks: PropTypes.object,
   onShelfChange: PropTypes.func,
@@ -165,7 +167,7 @@ Book.propTypes = {
 };
 
 Book.defaultProps = {
-  authors: '',
+  authors: [],
   imageLinks: {},
   onShelfChange: () => {},
   shelf: '',
