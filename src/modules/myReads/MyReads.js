@@ -4,12 +4,12 @@ import React, { Component } from 'react';
 import shortid from 'shortid';
 import { Link } from 'react-router-dom';
 
-import BookShelf from '../bookShelf';
+import BookShelf from '../../common/bookShelf';
 import Spinner from '../../common/loading';
 import UndefinedBooksListException from './UndefinedBooksListException';
-import { constants as bookConstants } from '../book';
-import { filterBooksListByShelfId } from '../../common/utils/bookUtils';
-import { getAllBooks } from '../../common/api/BooksAPI';
+import { constants as bookConstants } from '../../common/book';
+import { filterBooksListByShelfId } from '../../utils/bookUtils';
+import { getAllBooks } from '../../api/booksAPI';
 
 /**
  * A library containing various books categorized into multiple bookshelves.
