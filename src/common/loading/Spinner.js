@@ -72,12 +72,12 @@ Spinner.propTypes = {
 };
 
 Spinner.defaultProps = {
-  fillColor: 'red',
+  fillColor: '#10aded', // LOADED
   height: 50,
   style: {},
   svgStyle: {},
   text: 'Loading...',
-  textColor: 'red',
+  textColor: '#10aded', // LOADED
   viewBox: '0 0 50 50',
   width: 50,
 };

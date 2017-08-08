@@ -1,11 +1,21 @@
 import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 import DetailsList from '../../common/detailsList';
+import HomeIcon from '../../common/icons/HomeIcon';
+import Spinner from '../../common/loading';
+import UndefinedBookDetailsException from './UndefinedBookDetailsException';
+import { constants as bookConstants } from '../book';
+import { formatDate } from '../../common/utils/dateUtils';
 import { getBookById } from '../../common/api/BooksAPI';
 import { transformArrayIntoString } from '../../common/utils/arrayUtils';
-import { buildBookImageUrl } from '../../common/utils/bookUtils';
+import {
+  buildBookCoverImageUrl,
+  getBookISBN,
+  translateBookShelfName,
+} from '../../common/utils/bookUtils';
 
 class BookDetails extends Component {
   constructor(props) {
@@ -13,6 +23,8 @@ class BookDetails extends Component {
 
     this.state = {
       book: {},
+      isLoading: true,
+      loadingText: 'Fetching book details...',
     };
   }
 
@@ -25,10 +37,20 @@ class BookDetails extends Component {
           if (!isEmpty(res) &&
             !isEmpty(res.book)
           ) {
-            this.setState({ book: res.book, });
+            this.setState({
+              book: res.book,
+              isLoading: false,
+            });
+          } else {
+            this.setState({
+              isLoading: false,
+              loadingText: 'Unable to retrieve book details, try refreshing the page',
+            });
           }
         })
-        .catch(err => console.error('getBookById : error : ', err));
+        .catch(() => {
+          throw new UndefinedBookDetailsException();
+        });
     }
   }
 
@@ -49,7 +71,7 @@ class BookDetails extends Component {
 
   renderBookImage(book) {
     const { id, title, } = book;
-    const thumbnailUrl = buildBookImageUrl(id, 7);
+    const thumbnailUrl = buildBookCoverImageUrl(id, 7);
 
     return (
       <img
@@ -66,10 +88,14 @@ class BookDetails extends Component {
       ...book,
       subtitle: transformArrayIntoString(book.subtitle),
       categories: transformArrayIntoString(book.categories),
+      shelf: translateBookShelfName(book.shelf, bookConstants.SHELF_TITLES_MAP),
+      publishedDate: formatDate(
+        book.publishedDate,
+        'YYYY-MM-DD',
+        'LL'
+      ),
+      ISBN_13: getBookISBN(book.industryIdentifiers, 'ISBN_13'),
     };
-
-    console.log('data : ', data);
-    console.log('definitions : ', definitions);
 
     return (
       <DetailsList
@@ -84,50 +110,94 @@ class BookDetails extends Component {
 
     return (
       <div className="book-info">
+        <div className="book-info__header">
+          <HomeIcon />
+          <Link to="/" className="nav-link">Return Home</Link>
+        </div>
         <div className="book-info__image">
           {this.renderBookImage(book)}
         </div>
         <div className="book-info__details">
           {this.renderBookDetails(book)}
+          {this.renderPreviewLink(book)}
         </div>
       </div>
     );
   }
 
-  render() {
-    const { style, } = this.props;
-
+  renderPreviewLink(book) {
     return (
-      <div style={style} className="book-details">
-        {this.renderDetailsHeader()}
-        <div className="book-details__info">
-          {this.renderBookInfo()}
-        </div>
-      </div>
+      <a
+        alt={`Preview - ${book.title}`}
+        className="nav-link"
+        href={book.previewLink}
+        target="_blank"
+      >
+        Preview Book on Google
+      </a>
     );
+  }
+
+  render() {
+    const { style, spinner, } = this.props;
+    const { isLoading, loadingText, } = this.state;
+
+    if (!isLoading) {
+      return (
+        <div style={style} className="book-details">
+          {this.renderDetailsHeader()}
+          <div className="book-details__info">
+            {this.renderBookInfo()}
+          </div>
+        </div>
+      );
+    }
+
+    return <Spinner {...spinner} text={loadingText} />;
   }
 }
 
 BookDetails.propTypes = {
   definitions: PropTypes.array,
   match: PropTypes.object.isRequired,
+  spinner: PropTypes.object,
   style: PropTypes.object,
 };
 
 BookDetails.defaultProps = {
   style: {},
+  spinner: {
+    style: {
+      marginTop: '100px',
+    },
+  },
+  // NOTE: Disabling the eslint setting for 'no-template-curly-in-string' since the
+  // textReplacement() method requires the stringToBeReplaced to be inside template curly brackets.
+  /* eslint no-template-curly-in-string: "off" */
   definitions: [
     {
       label: 'Subtitle',
       valueTemplate: '${subtitle}',
     },
     {
+      label: 'ISBN (13)',
+      valueTemplate: '${ISBN_13}',
+    },
+    {
       label: 'Description',
       valueTemplate: '${description}',
     },
     {
+      label: 'On BookShelf',
+      valueTemplate: '${shelf}',
+    },
+    {
       label: 'Publisher',
       valueTemplate: '${publisher}',
+    },
+    {
+      label: 'Published Date',
+      valueTemplate: '${publishedDate}',
     },
     {
       label: 'Page Count',

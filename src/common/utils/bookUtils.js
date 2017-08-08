@@ -10,23 +10,50 @@ const filterBooksListByShelfId = (booksList, shelfId) =>
   booksList.filter(book => book.shelf === shelfId);
 
 /**
- * Convert the given list of authors into a single string for better readability
- * @param  {Object}      authors The authors of the given book
- * @return {string|null}
+ * Build the book image url based on a given id and zoom level
+ * NOTE: This is more of a helper method than an actual url generator function.
+ * This is so we can display the larger version of the book's cover image.
+ *
+ * @param  {string} id   The bookId
+ * @param  {number} zoom The zoom level for grabbing the image
+ * @return {string}      The final url
  */
-const transformBookAuthorsToString = (authors) => (!isEmpty(authors) ?
-  authors.reduce((res, author) => (
-      res ? `${res}, ${author}` : `${author}`
-    ),
-    ''
-  ) : null
+const buildBookCoverImageUrl = (id, zoom) =>
+  `http://books.google.com/books/content?id=${id}` +
+  `&printsec=frontcover&img=1&zoom=${zoom}&edge=curl&source=gbs_api`;
+
+/**
+ * Translate the given shelf name to a human readable shelf name,
+ * as well as append a 'Books I' to the shelf name
+ * @param  {string} shelfId        The shelf ID
+ * @param  {Object} shelfTitlesMap The bookshelf title map
+ * @return {string}
+ */
+const translateBookShelfName = (shelfId, shelfTitlesMap) => {
+  const shelfName = shelfTitlesMap[shelfId];
+
+  if (!isEmpty(shelfName)) {
+    return `Books I ${shelfTitlesMap[shelfId]}`;
+  }
+
+  // TODO: Add a link to let the user add the book to their desired bookshelf in the MyReads Library.
+  return 'Currently not in MyReads Library';
+};
+
+/**
+ * Get the requested ISBN (10 or 13 digit) from the given list of Industry Identifiers
+ * @param  {Array}  list A list of industry identifiers
+ * @param  {string} id   The ISBN type to find
+ * @return {string}
+ */
+const getBookISBN = (list, id) => (!isEmpty(list) &&
+  Array.isArray(list) ?
+  list.find(item => item.type === id).identifier : ''
 );
 
-const buildBookImageUrl = (id, zoom) =>
-  `http://books.google.com/books/content?id=${id}&printsec=frontcover&img=1&zoom=${zoom}&edge=curl&source=gbs_api`;
-
 export {
-  buildBookImageUrl,
+  buildBookCoverImageUrl,
   filterBooksListByShelfId,
-  transformBookAuthorsToString,
+  getBookISBN,
+  translateBookShelfName,
 };

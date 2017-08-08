@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import BookShelf from '../bookShelf';
 import Spinner from '../../common/loading';
 import UndefinedBooksListException from './UndefinedBooksListException';
+import { constants as bookConstants } from '../book';
 import { filterBooksListByShelfId } from '../../common/utils/bookUtils';
 import { getAllBooks } from '../../common/api/BooksAPI';
 
@@ -66,15 +67,15 @@ class MyReads extends Component {
         this.setState({
           shelves: {
             currentlyReading: {
-              title: this.props.shelfTitles.currentlyReading,
+              title: bookConstants.SHELF_TITLES_MAP.currentlyReading,
               booksList: currentlyReading,
             },
             wantToRead: {
-              title: this.props.shelfTitles.wantToRead,
+              title: bookConstants.SHELF_TITLES_MAP.wantToRead,
               booksList: wantToRead,
             },
             read: {
-              title: this.props.shelfTitles.read,
+              title: bookConstants.SHELF_TITLES_MAP.read,
               booksList: read,
             },
           },
@@ -141,20 +142,12 @@ class MyReads extends Component {
 }
 
 MyReads.propTypes = {
-  shelfTitles: PropTypes.object,
   spinner: PropTypes.object,
   title: PropTypes.string,
 };
 
 MyReads.defaultProps = {
-  shelfTitles: {
-    currentlyReading: 'Currently Enjoy Reading',
-    wantToRead: 'I Want to Read',
-    read: 'I\'ve Already Read',
-  },
   spinner: {
-    fillColor: '#10aded', /* LOADED */
-    textColor: '#10aded', /* LOADED */
     style: {
       marginTop: '200px',
     },

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 import SelectList from '../../common/selectList';
 import { moveBookToShelf } from '../../common/api/BooksAPI';
-import { transformBookAuthorsToString } from '../../common/utils/bookUtils';
+import { transformArrayIntoString } from '../../common/utils/arrayUtils';
 
 /**
  * Class to render a single Book
@@ -130,7 +130,7 @@ class Book extends Component {
 
     return (
       <Link
-        className="book-details-link"
+        className="nav-link book-details-link"
         to={`/book/${id}`}
       >
         View Details
@@ -148,7 +148,7 @@ class Book extends Component {
           {this.renderBookShelfChanger()}
         </div>
         <div className="book-title">{this.props.title}</div>
-        <div className="book-authors">{transformBookAuthorsToString(authors)}</div>
+        <div className="book-authors">{transformArrayIntoString(authors)}</div>
         <div className="book-details">{this.renderDetailsLink()}</div>
       </div>
     );
