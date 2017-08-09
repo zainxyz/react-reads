@@ -155,38 +155,41 @@ class BookDetails extends Component {
   }
 
   render() {
-    const { style, spinner, } = this.props;
+    const { style, } = this.props;
     const { isLoading, loadingText, } = this.state;
 
-    if (!isLoading) {
-      return (
-        <div style={style} className="book-details">
-          {this.renderDetailsHeader()}
-          <div className="book-details__info">
-            {this.renderBookInfo()}
-          </div>
-        </div>
-      );
-    }
+    return (
+      <div style={style} className="book-details">
+        {
+          !isLoading &&
+          this.renderDetailsHeader()
+        }
+        {
+          !isLoading &&
+          (
+            <div className="book-details__info">
+              {this.renderBookInfo()}
+            </div>
+          )
+        }
+        {
+          isLoading &&
+          <Spinner text={loadingText} />
+        }
+      </div>
+    );
 
-    return <Spinner {...spinner} text={loadingText} />;
   }
 }
 
 BookDetails.propTypes = {
   definitions: PropTypes.array,
   match: PropTypes.object.isRequired,
-  spinner: PropTypes.object,
   style: PropTypes.object,
 };
 
 BookDetails.defaultProps = {
   style: {},
-  spinner: {
-    style: {
-      marginTop: '100px',
-    },
-  },
   // NOTE: Disabling the eslint setting for 'no-template-curly-in-string' since the
   // textReplacement() method requires the stringToBeReplaced to be inside template curly brackets.
   /* eslint no-template-curly-in-string: "off" */

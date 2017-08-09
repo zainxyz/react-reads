@@ -21,7 +21,6 @@ import SpinnerText from './SpinnerText';
  * @return {JSX}
  */
 const Spinner = ({
-  defaultStyles,
   fillColor,
   height,
   style,
@@ -32,10 +31,7 @@ const Spinner = ({
   width,
 }) => (
   <div
-    style={{
-      ...defaultStyles,
-      ...style,
-    }}
+    style={style}
     className="spinner-container"
   >
     <SvgIcon
@@ -67,7 +63,6 @@ const Spinner = ({
 );
 
 Spinner.propTypes = {
-  defaultStyles: PropTypes.object,
   fillColor: PropTypes.string,
   height: PropTypes.number,
   style: PropTypes.object,
@@ -79,12 +74,6 @@ Spinner.propTypes = {
 };
 
 Spinner.defaultProps = {
-  defaultStyles: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
-  },
   fillColor: '#10aded', // LOADED
   height: 50,
   style: {},

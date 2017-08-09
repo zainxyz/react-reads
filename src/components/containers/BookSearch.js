@@ -102,11 +102,11 @@ class BookSearch extends Component {
    */
   renderSearchedBookGrid() {
     const { fetchedBooks, isLoading, loadingText, } = this.state;
-    const { fetchAllBooks, } = this.props;
+    const { fetchAllBooks, noBooksFoundText, startTypingText, } = this.props;
 
     // Display the loading spinner if we're currently fetching the books via the provided query
     if (isLoading) {
-      return <Spinner {...this.props.spinner} text={loadingText} />;
+      return <Spinner text={loadingText} />;
     }
 
     // If we have finished fetching the books, and the fetchedBooks list isn't empty then
@@ -128,7 +128,7 @@ class BookSearch extends Component {
       fetchedBooks !== null
     ) {
       return (
-        <HelpText text={this.props.noBooksFoundText} />
+        <HelpText text={noBooksFoundText} />
       );
     }
 
@@ -136,7 +136,7 @@ class BookSearch extends Component {
     // the beginning, 'Start by typing...' text
     if (fetchedBooks === null) {
       return (
-        <HelpText text={this.props.startTypingText} />
+        <HelpText text={startTypingText} />
       );
     }
 
@@ -145,7 +145,7 @@ class BookSearch extends Component {
 
   render() {
     return (
-      <div className="books-search-wrapper">
+      <div className="books-search">
         <SearchBar
           closeSearchURL={this.props.closeSearchURL}
           getQuery={this.fetchBooksByQuery}
@@ -166,7 +166,6 @@ BookSearch.propTypes = {
   fetchAllBooks: PropTypes.func,
   originalBooksList: PropTypes.array,
   placeholder: PropTypes.string,
-  spinner: PropTypes.object,
   startTypingText: PropTypes.array,
   throttleSeconds: PropTypes.number,
 };
@@ -182,11 +181,6 @@ BookSearch.defaultProps = {
   fetchAllBooks: () => {},
   originalBooksList: [],
   placeholder: '',
-  spinner: {
-    style: {
-      marginTop: '200px',
-    },
-  },
   startTypingText: [
     'Start by typing in the search field above...'
   ],

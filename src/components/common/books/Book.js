@@ -10,13 +10,12 @@ import { transformArrayIntoString } from 'utils/arrayUtils';
 
 /**
  * Render the book cover
- * @param {string} title      The title of the book cover
  * @param {Object} imageLinks The image links for the book cover
- * @param {Object} style      The style attribute for the book cover
+ * @param {string} title      The title of the book cover
  * @param {string} subtitle   The subtitle of the book cover
  * @return {JSX}
  */
-const renderBookCover = (title, imageLinks, style, subtitle) => {
+const renderBookCover = (imageLinks, title, subtitle) => {
   // Create the image source link
   const imgSrc =
     imageLinks &&
@@ -32,7 +31,6 @@ const renderBookCover = (title, imageLinks, style, subtitle) => {
       alt={altText}
       className="book-cover"
       src={imgSrc}
-      style={style}
       title={title}
     />
   );
@@ -126,7 +124,7 @@ const Book = ({
   return (
     <div className="book">
       <div className="book-top">
-        {renderBookCover(title, imageLinks, style.bookCover, subtitle)}
+        {renderBookCover(imageLinks, title, subtitle)}
         {renderBookShelfChanger(updateBook, shelf, BookConstants.SELECT_LIST_OPTIONS)}
       </div>
       <div className="book-title">{title}</div>
@@ -155,12 +153,7 @@ Book.defaultProps = {
   onShelfChange: () => {},
   publisher: '',
   shelf: '',
-  style: {
-    bookCover: {
-      width: '128px',
-      height: '193px',
-    },
-  },
+  style: {},
   subtitle: '',
   title: '',
   viewDetailsLink: false,

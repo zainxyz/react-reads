@@ -103,42 +103,47 @@ class MyReads extends Component {
   }
 
   render() {
-    if (!this.state.isLoading) {
-      return (
-        <div className="list-books">
-          {this.renderTitle()}
+    const { isLoading, loadingText, } = this.state;
+
+    return (
+      <div className="list-books">
+        {
+          !isLoading &&
+          this.renderTitle()
+        }
+        {
+          !isLoading &&
           <div className="list-books-content">
             <div>
               {this.renderBookShelves()}
             </div>
           </div>
+        }
+        {
+          !isLoading &&
           <div className="open-search">
             <Link to="/search">
               Add a book
             </Link>
           </div>
-        </div>
-      );
-    }
-
-    return <Spinner {...this.props.spinner} text={this.state.loadingText} />;
+        }
+        {
+          isLoading &&
+          <Spinner text={loadingText} />
+        }
+      </div>
+    );
   }
 }
 
 MyReads.propTypes = {
   booksList: PropTypes.array.isRequired,
   onShelfChange: PropTypes.func,
-  spinner: PropTypes.object,
   title: PropTypes.string,
 };
 
 MyReads.defaultProps = {
   onShelfChange: () => {},
-  spinner: {
-    style: {
-      marginTop: '200px',
-    },
-  },
   title: 'MyReads Library',
 };
 

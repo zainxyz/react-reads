@@ -10,13 +10,13 @@ import shortid from 'shortid';
  * @param  {Object} options       The props for the HelpText component
  * @return {JSX}
  */
-const HelpText = ({ style, text, }) => (
-  <div style={style}>
-    <div style={style.inner}>
+const HelpText = ({ text, }) => (
+  <div className="help-text">
+    <div className="help-text__list">
       {
         !isEmpty(text) &&
         text.map(text =>
-          <p key={shortid.generate()} style={style.singleLine}>{text}</p>
+          <p key={shortid.generate()} className="help-text__list__item">{text}</p>
         )
       }
     </div>
@@ -25,27 +25,6 @@ const HelpText = ({ style, text, }) => (
 
 HelpText.propTypes = {
   text: PropTypes.array.isRequired,
-  style: PropTypes.object,
-};
-
-HelpText.defaultProps = {
-  style: {
-    alignItems: 'center',
-    display: 'flex',
-    fontSize: '20px',
-    justifyContent: 'center',
-    inner: {
-      alignItems: 'center',
-      display: 'flex',
-      flexDirection: 'column',
-      margin: '0 auto',
-      width: '80%',
-    },
-    lineHeight: 1.2,
-    singleLine: {
-      margin: '20px 0',
-    },
-  },
 };
 
 export default HelpText;

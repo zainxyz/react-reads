@@ -22,6 +22,16 @@ body, .app {
   color: #fee; /* FEE */
 }
 
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.list-books .spinner-container {
+  margin-top: 100px;
+}
 .list-books-content {
   padding: 0 0 80px;
   flex: 1;
@@ -30,11 +40,11 @@ body, .app {
 .bookshelf {
   padding: 0 10px 20px;
 }
-
 .bookshelf-title {
   border-bottom: 1px solid #dedede;
   font-weight: 300;
   margin: 20px;
+  text-align: center;
 }
 .bookshelf-books {
   text-align: center;
@@ -204,8 +214,10 @@ body, .app {
 /* book cover */
 
 .book-cover {
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   background: #eee;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  height: 193px;
+  width: 128px;
 }
 .book-cover-title {
   padding: 20px 10px 0;
@@ -216,6 +228,9 @@ body, .app {
 /* book details */
 
 .book-details {}
+.book-details .spinner-container {
+  margin-top: 100px;
+}
 .book-details__info {
   padding: 20px;
 }
@@ -241,6 +256,25 @@ body, .app {
 }
 .book-info__details {
   padding: 25px 0 0;
+}
+
+/* help text */
+.help-text {
+  align-items: center;
+  display: flex;
+  font-size: 20px;
+  justify-content: center;
+  line-height: 1.2;
+}
+.help-text__list {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  width: 80%;
+}
+.help-text__list__item {
+  margin: 20px 0;
 }
 
 /* details list */
@@ -280,9 +314,9 @@ body, .app {
   .bookshelf {
     padding: 0 20px 40px;
   }
-  /*.bookshelf-title {
-    margin: 0;
-  }*/
+  .bookshelf-title {
+    text-align: left;
+  }
   .book-details__info {
     width: 60%;
     margin: 50px auto 0 auto;
