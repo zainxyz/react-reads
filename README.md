@@ -9,7 +9,7 @@ A MyReads Books Library, which categorizes a group of selected books via 3 disti
 
 Each book has a set of controls that allow the user to move the book to a different bookshelf. If you would like to view more details about the book, click the `View Details` link underneath each of the books in the bookshelf.
 
-NOTE: This link is not available while searching for a particular book on the `/search` page.
+NOTE: The **View Details** page will take you back to the homepage.
 
 ---
 
@@ -47,4 +47,12 @@ $ npm test
 
 ````javascript
 $ npm run lint
+````
+
+## Building Documentation
+
+````javascript
+$ npm i -g documentation
+
+$ documentation build src/** -f html -o docs
 ````
