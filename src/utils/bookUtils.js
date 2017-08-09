@@ -41,19 +41,26 @@ const translateBookShelfName = (shelfId, shelfTitlesMap) => {
 };
 
 /**
- * Get the requested ISBN (10 or 13 digit) from the given list of Industry Identifiers
+ * Get the requested Industry Identifier from the given list of Industry Identifiers via an Id
  * @param  {Array}  list A list of industry identifiers
- * @param  {string} id   The ISBN type to find
+ * @param  {string} id   The identifier type to find
  * @return {string}
  */
-const getBookISBN = (list, id) => (!isEmpty(list) &&
-  Array.isArray(list) ?
-  list.find(item => item.type === id).identifier : ''
-);
+const getBookIdentifierById = (list, id) => {
+  const industry = (!isEmpty(list) &&
+    Array.isArray(list) ?
+    list.find(item => item.type === id) : ''
+  );
+
+  return (!isEmpty(industry) &&
+    industry.identifier ?
+    industry.identifier : ''
+  );
+};
 
 export {
   buildBookCoverImageUrl,
   filterBooksListByShelfId,
-  getBookISBN,
+  getBookIdentifierById,
   translateBookShelfName,
 };

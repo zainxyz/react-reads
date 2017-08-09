@@ -14,7 +14,7 @@ import { PreviewLink } from 'common/links';
 import { transformArrayIntoString } from 'utils/arrayUtils';
 import {
   buildBookCoverImageUrl,
-  getBookISBN,
+  getBookIdentifierById,
   translateBookShelfName,
 } from 'utils/bookUtils';
 
@@ -105,7 +105,7 @@ class BookDetails extends Component {
         'YYYY-MM-DD',
         'LL'
       ),
-      ISBN_13: getBookISBN(book.industryIdentifiers, 'ISBN_13'),
+      ISBN_13: getBookIdentifierById(book.industryIdentifiers, 'ISBN_13'),
     };
 
     return (

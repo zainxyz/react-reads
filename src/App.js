@@ -1,5 +1,3 @@
-import isEmpty from 'lodash/isEmpty';
-import isEqual from 'lodash/isEqual';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
@@ -26,7 +24,7 @@ class BooksApp extends Component {
     };
 
     // Bindings to 'this'
-    this.refetchAllBooks = this.refetchAllBooks.bind(this);
+    this.fetchAllBooks = this.fetchAllBooks.bind(this);
     this.renderBookSearch = this.renderBookSearch.bind(this);
     this.renderMyReads = this.renderMyReads.bind(this);
   }
@@ -34,18 +32,6 @@ class BooksApp extends Component {
   componentDidMount() {
     // Fetch all of the books on the initial mounting
     this.fetchAllBooks();
-  }
-
-  /**
-   * Re-fetch all of the books.
-   * @param  {Object}  updatedBooks
-   * @return {Promise}
-   */
-  refetchAllBooks(updatedBooks) {
-    if (!isEmpty(updatedBooks)) {
-      this.fetchAllBooks();
-    }
-    return null;
   }
 
   /**
@@ -58,12 +44,10 @@ class BooksApp extends Component {
         // This is the final booksList coming back from the API fetch call.
         const booksList = res.books ? res.books : [];
 
-        if (!isEqual(booksList, this.state.booksList)) {
-          // After successfully fetching the 'booksList', update the component's state with booksList
-          this.setState({ booksList, });
-        }
+        // After successfully fetching the 'booksList', update the component's state with booksList
+        this.setState({ booksList, });
       })
-      .catch((err) => {
+      .catch(() => {
         throw new UndefinedBooksListException();
       });
 
@@ -83,7 +67,7 @@ class BooksApp extends Component {
         closeSearchURL={closeSearchURL}
         originalBooksList={booksList}
         placeholder={searchPlaceholder}
-        refetchAllBooks={this.refetchAllBooks}
+        fetchAllBooks={this.fetchAllBooks}
       />
     );
   }
@@ -98,7 +82,7 @@ class BooksApp extends Component {
     return (
       <MyReads
         booksList={booksList}
-        onShelfChange={this.refetchAllBooks}
+        onShelfChange={this.fetchAllBooks}
       />
     );
   }

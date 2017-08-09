@@ -19,7 +19,7 @@ const SelectList = ({ defaultValue, onBlur, options, value, }) => (
     onChange={(e) => onBlur(e.target.value)}
     value={value}
   >
-    <SelectListOption disabled value="">
+    <SelectListOption disabled>
       {defaultValue}
     </SelectListOption>
     {

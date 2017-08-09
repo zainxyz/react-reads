@@ -6,8 +6,33 @@ import BooksGrid from 'common/booksGrid';
 import HelpText from 'common/helpText';
 import SearchBar from 'common/searchBar';
 import Spinner from 'common/loading';
-import { mergeOldAndNewListsByKey } from 'utils/arrayUtils';
 import { searchBooks } from 'api/booksAPI';
+
+/**
+ * Update all of the shelves in the new list of books with the old list of books if there is a match found
+ * @param  {Array} oldList The old book list
+ * @param  {Array} newList The new book list
+ * @return {Array}
+ */
+const updateAllShelves = (oldList, newList) => {
+  if (Array.isArray(newList)) {
+    return newList.map((book, idx) => {
+      const bookCopy = {
+        ...book,
+      };
+      const match = oldList.find(item => item.id === bookCopy.id);
+
+      if (!isEmpty(match)) {
+        bookCopy.shelf = match.shelf;
+      } else {
+        bookCopy.shelf = '';
+      }
+
+      return bookCopy;
+    });
+  }
+  return [];
+};
 
 /**
  * Class for searching for a book given a search term
@@ -34,9 +59,14 @@ class BookSearch extends Component {
     window.scrollTo(0, 0);
   }
 
-  componentWillUnmount() {
-    // Calling the parent's 'refetchAllBooks' to re-fetch the books upon an un-mounting.
-    this.props.refetchAllBooks(this.state.fetchedBooks);
+  componentWillReceiveProps(nextProps) {
+    const { originalBooksList, } = nextProps;
+    const { fetchedBooks, } = this.state;
+    const updatedBooksList = updateAllShelves(originalBooksList, fetchedBooks);
+
+    if (!isEmpty(fetchedBooks)) {
+      this.setState({ fetchedBooks: updatedBooksList, });
+    }
   }
 
   /**
@@ -51,7 +81,7 @@ class BookSearch extends Component {
         .then(res => {
           const booksList = res.books ? res.books : [];
           const { originalBooksList, } = this.props;
-          const updatedBooksList = mergeOldAndNewListsByKey(originalBooksList, booksList, 'id');
+          const updatedBooksList = updateAllShelves(originalBooksList, booksList);
 
           if (!isEmpty(updatedBooksList)) {
             this.setState({ fetchedBooks: updatedBooksList, isLoading: false, });
@@ -67,26 +97,12 @@ class BookSearch extends Component {
   }
 
   /**
-   * Render a search bar atop the current page
-   * @return {JSX}
-   */
-  renderSearchBar() {
-    return (
-      <SearchBar
-        closeSearchURL={this.props.closeSearchURL}
-        getQuery={this.fetchBooksByQuery}
-        placeholder={this.props.placeholder}
-        throttleSeconds={this.props.throttleSeconds}
-      />
-    );
-  }
-
-  /**
    * Render a books grid for the fetched books
    * @return {JSX}
    */
   renderSearchedBooksGrid() {
     const { fetchedBooks, isLoading, loadingText, } = this.state;
+    const { fetchAllBooks, } = this.props;
 
     // Display the loading spinner if we're currently fetching the books via the provided query
     if (isLoading) {
@@ -99,6 +115,7 @@ class BookSearch extends Component {
       return (
         <BooksGrid
           booksList={fetchedBooks}
+          onShelfChange={fetchAllBooks}
           viewDetailsLink
         />
       );
@@ -129,7 +146,12 @@ class BookSearch extends Component {
   render() {
     return (
       <div className="books-search-wrapper">
-        {this.renderSearchBar()}
+        <SearchBar
+          closeSearchURL={this.props.closeSearchURL}
+          getQuery={this.fetchBooksByQuery}
+          placeholder={this.props.placeholder}
+          throttleSeconds={this.props.throttleSeconds}
+        />
         <div className="search-results">
           {this.renderSearchedBooksGrid()}
         </div>
@@ -141,7 +163,7 @@ class BookSearch extends Component {
 BookSearch.propTypes = {
   closeSearchURL: PropTypes.string,
   noBooksFoundText: PropTypes.array,
-  refetchAllBooks: PropTypes.func,
+  fetchAllBooks: PropTypes.func,
   originalBooksList: PropTypes.array,
   placeholder: PropTypes.string,
   spinner: PropTypes.object,
@@ -157,7 +179,7 @@ BookSearch.defaultProps = {
     'Acceptable search terms are the following:',
     "'Android', 'Art', 'Artificial Intelligence', 'Astronomy', 'Austen', 'Baseball', 'Basketball', 'Bhagat', 'Biography', 'Brief', 'Business', 'Camus', 'Cervantes', 'Christie', 'Classics', 'Comics', 'Cook', 'Cricket', 'Cycling', 'Desai', 'Design', 'Development', 'Digital Marketing', 'Drama', 'Drawing', 'Dumas', 'Education', 'Everything', 'Fantasy', 'Film', 'Finance', 'First', 'Fitness', 'Football', 'Future', 'Games', 'Gandhi', 'History', 'History', 'Homer', 'Horror', 'Hugo', 'Ibsen', 'Journey', 'Kafka', 'King', 'Lahiri', 'Larsson', 'Learn', 'Literary Fiction', 'Make', 'Manage', 'Marquez', 'Money', 'Mystery', 'Negotiate', 'Painting', 'Philosophy', 'Photography', 'Poetry', 'Production', 'Program Javascript', 'Programming', 'React', 'Redux', 'River', 'Robotics', 'Rowling', 'Satire', 'Science Fiction', 'Shakespeare', 'Singh', 'Swimming', 'Tale', 'Thrun', 'Time', 'Tolstoy', 'Travel', 'Ultimate', 'Virtual Reality', 'Web Development', 'iOS'"
   ],
-  refetchAllBooks: () => {},
+  fetchAllBooks: () => {},
   originalBooksList: [],
   placeholder: '',
   spinner: {
