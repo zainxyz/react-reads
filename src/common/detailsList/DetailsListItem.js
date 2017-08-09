@@ -2,14 +2,20 @@ import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const renderLabel = label => (!isEmpty(label) ?
-  <p>{label}</p> : null
-);
-
+/**
+ * Render a single details list item
+ * @param  {string} options.label The label for the list item
+ * @param  {string} options.value The value for the list item
+ * @param  {Object} options       The props for the DetailsListItem component
+ * @return {JSX}
+ */
 const DetailsListItem = ({ label, value, }) => (!isEmpty(value) ?
   (
     <li className="details-list__item">
-      {renderLabel(label)}
+      {
+        !isEmpty(label) &&
+        <p>{label}</p>
+      }
       <p>{value}</p>
     </li>
   ) : null

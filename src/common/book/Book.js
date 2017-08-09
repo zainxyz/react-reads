@@ -1,169 +1,152 @@
 import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 import SelectList from 'common/selectList';
 import { moveBookToShelf } from 'api/booksAPI';
 import { transformArrayIntoString } from 'utils/arrayUtils';
 
+import * as BookConstants from './BookConstants';
+
 /**
- * Class to render a single Book
- * @class
- * @extends {Component}
+ * Render the book cover
+ * @param {string} title      The title of the book cover
+ * @param {Object} imageLinks The image links for the book cover
+ * @param {Object} style      The style attribute for the book cover
+ * @param {string} subtitle   The subtitle of the book cover
+ * @return {JSX}
  */
-class Book extends Component {
-  constructor(props) {
-    super(props);
+const renderBookCover = (title, imageLinks, style, subtitle) => {
+  // Create the image source link
+  const imgSrc =
+    imageLinks &&
+    imageLinks.thumbnail ?
+    imageLinks.thumbnail : '';
 
-    // Set the initial state
-    this.state = {
-      shelf: props.shelf,
-    };
+  // Build the alternate text for the image
+  let altText = `Book: ${title}`;
 
-    // Bindings to 'this'
-    this.onSelectChange = this.onSelectChange.bind(this);
+  // Append the 'subtitle' of the book (to the altText) if one is present
+  if (!isEmpty(subtitle)) {
+    altText = `${altText} (${subtitle})`;
   }
 
-  /**
-   * On change of each of the book's shelf name (shelfId)
-   * @param  {string} shelfId The id of the new shelf
-   */
-  onSelectChange(shelfId) {
-    this.updateBook(shelfId);
-    this.setState({ shelf: shelfId, });
-  }
+  return (
+    <img
+      alt={altText}
+      className="book-cover"
+      src={imgSrc}
+      style={style}
+      title={title}
+    />
+  );
+};
 
-  /**
-   * Get the select options for the drop-down.
-   * TODO: For now these options reside in this (Book) class, maybe in future these can be
-   * dynamically generated based on a list of available bookShelf Ids?
-   * @return {Array}
-   */
-  getSelectOptions() {
-    return [
-      {
-        "value": "currentlyReading",
-        "label": "Currently Reading",
-      },
-      {
-        "value": "wantToRead",
-        "label": "Want to Read",
-      },
-      {
-        "value": "read",
-        "label": "Read",
-      },
-      {
-        "value": "none",
-        "label": "None",
-      }
-    ];
-  }
+/**
+ * Render a book shelf changer (a simple select input)
+ * @param {Function} onSelectChange The callback function
+ * @param {string}   value          The value for the select input
+ * @param {Array}    options        The list of options for the select input
+ * @return {JSX}
+ */
+const renderBookShelfChanger = (onSelectChange, value, options) => (
+  <div className="book-shelf-changer">
+    <SelectList
+      defaultValue="Move to shelf..."
+      onBlur={onSelectChange}
+      options={options}
+      value={value}
+    />
+  </div>
+);
 
+/**
+ * Render the author's names, if present otherwise render the publisher's name if present
+ * @param  {Array}  authors   The authors list
+ * @param  {string} publisher The name of the publisher
+ * @return {string}
+ */
+const renderAuthors = (authors, publisher) => (
+  authors ?
+  transformArrayIntoString(authors) : (
+    publisher ?
+    publisher : ''
+  )
+);
+
+/**
+ * Render a 'view details' link underneath the book
+ * @param  {string}  id              The book id
+ * @param  {boolean} viewDetailsLink Should we display the link?
+ * @return {JSX}
+ */
+const renderDetailsLink = (id, viewDetailsLink) => (
+  viewDetailsLink ?
+  (
+    <Link
+      className="nav-link book-details-link"
+      to={`/book/${id}`}
+    >
+      View Details
+    </Link>
+  ) : null
+);
+
+/**
+ * Render a single book with all the required information.
+ * @param  {Array}    options.authors         The list of authors
+ * @param  {string}   options.id              The book id
+ * @param  {Object}   options.imageLinks      The links for the image thumbnails
+ * @param  {Function} options.onShelfChange   The callback for changing the book's current shelf
+ * @param  {string}   options.publisher       The publisher of the book
+ * @param  {string}   options.shelf           The current shelf that the book is on
+ * @param  {Object}   options.style           The styles for the book
+ * @param  {string}   options.subtitle        The subtitle for the book
+ * @param  {string}   options.title           The title for the book
+ * @param  {boolean}  options.viewDetailsLink Should we display the 'view details' link?
+ * @param  {Object}   options                 The props for the Book component
+ * @return {JSX}
+ */
+const Book = ({
+  authors,
+  id,
+  imageLinks,
+  onShelfChange,
+  publisher,
+  shelf,
+  style,
+  subtitle,
+  title,
+  viewDetailsLink,
+}) => {
   /**
    * Update the book - to - shelf association
-   * @param  {string} shelfId The id of the new shelf
+   * @param  {string}   shelfId The id of the new shelf
+   * @return {Function}
    */
-  updateBook(shelfId) {
-    moveBookToShelf(this.props.id, shelfId)
-      .then(res => this.props.onShelfChange(res));
-  }
+  const updateBook = (shelfId) => moveBookToShelf(id, shelfId)
+    .then(res => onShelfChange(res));
 
-  /**
-   * Render the book covers
-   * @return {JSX}
-   */
-  renderBookCover() {
-    const { title, imageLinks, style, subtitle, } = this.props;
-
-    // Build the styles for the book cover.
-    // TODO: Move styles to a higher up config.
-    const bookCoverStyles = {
-      ...style.bookCover,
-    };
-
-    // Create the image source link
-    const imgSrc =
-      imageLinks &&
-      imageLinks.thumbnail ?
-      imageLinks.thumbnail : '';
-
-    // Build the alternate text for the image
-    let altText = `Book: ${title}`;
-
-    // Append the 'subtitle' of the book (to the altText) if one is present
-    if (!isEmpty(subtitle)) {
-      altText = `${altText} (${subtitle})`;
-    }
-
-    return (
-      <img
-        alt={altText}
-        className="book-cover"
-        style={bookCoverStyles}
-        title={title}
-        src={imgSrc}
-      />
-    );
-  }
-
-  /**
-   * Render a book shelf changer (a simple select input)
-   * @return {JSX}
-   */
-  renderBookShelfChanger() {
-    return (
-      <div className="book-shelf-changer">
-        <SelectList
-          defaultValue="Move to shelf..."
-          onBlur={this.onSelectChange}
-          options={this.getSelectOptions()}
-          value={this.state.shelf}
-        />
+  return (
+    <div className="book">
+      <div className="book-top">
+        {renderBookCover(title, imageLinks, style.bookCover, subtitle)}
+        {renderBookShelfChanger(updateBook, shelf, BookConstants.SELECT_LIST_OPTIONS)}
       </div>
-    );
-  }
-
-  renderDetailsLink() {
-    const { id, viewDetailsLink, } = this.props;
-
-    if (viewDetailsLink) {
-      return (
-        <Link
-          className="nav-link book-details-link"
-          to={`/book/${id}`}
-        >
-          View Details
-        </Link>
-      );
-    }
-
-    return null;
-  }
-
-  render() {
-    const { authors, } = this.props;
-
-    return (
-      <div className="book">
-        <div className="book-top">
-          {this.renderBookCover()}
-          {this.renderBookShelfChanger()}
-        </div>
-        <div className="book-title">{this.props.title}</div>
-        <div className="book-authors">{transformArrayIntoString(authors)}</div>
-        <div className="book-details">{this.renderDetailsLink()}</div>
-      </div>
-    );
-  }
-}
+      <div className="book-title">{title}</div>
+      <div className="book-authors">{renderAuthors(authors, publisher)}</div>
+      <div className="book-details">{renderDetailsLink(id, viewDetailsLink)}</div>
+    </div>
+  );
+};
 
 Book.propTypes = {
   authors: PropTypes.array,
   id: PropTypes.string.isRequired,
   imageLinks: PropTypes.object,
   onShelfChange: PropTypes.func,
+  publisher: PropTypes.string,
   shelf: PropTypes.string,
   style: PropTypes.object,
   subtitle: PropTypes.string,
@@ -175,6 +158,7 @@ Book.defaultProps = {
   authors: [],
   imageLinks: {},
   onShelfChange: () => {},
+  publisher: '',
   shelf: '',
   style: {
     bookCover: {
@@ -183,8 +167,8 @@ Book.defaultProps = {
     },
   },
   subtitle: '',
-  viewDetailsLink: false,
   title: '',
+  viewDetailsLink: false,
 };
 
 export default Book;

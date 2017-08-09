@@ -2,15 +2,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 /**
- * Render the subtitle if one is present
- * @param  {string} subTitle The text to be rendered as a subtitle
- * @return {JSX|null}
- */
-const renderSubTitle = subTitle => (
-  subTitle ? <p>{subTitle}</p> : null
-);
-
-/**
  * A component for building the page title with an optional sub-title
  * @param  {string} [options.className] Optional class name
  * @param  {string} options.title       The required title for the section heading
@@ -21,7 +12,10 @@ const renderSubTitle = subTitle => (
 const PageTitle = ({ className, title, subTitle, }) => (
   <div className={`page-title ${className}`}>
     <h1>{title}</h1>
-    {renderSubTitle(subTitle)}
+    {
+      subTitle &&
+      <p>{subTitle}</p>
+    }
   </div>
 );
 

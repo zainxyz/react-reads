@@ -1,43 +1,37 @@
 import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
 import shortid from 'shortid';
 
 import { textReplacement } from 'utils/stringUtils';
 
 import DetailsListItem from './DetailsListItem';
 
-class DetailsList extends Component {
-  renderListItems(definitions, item) {
-    return definitions.map(definition => (
-      <DetailsListItem
-        key={shortid.generate()}
-        label={definition.label}
-        value={textReplacement(definition.valueTemplate, item)}
-      />
-    ));
-  }
-
-  renderList() {
-    const { data, definitions, } = this.props;
-
-    if (!isEmpty(data)) {
-      return (
-        <ul>
-          {this.renderListItems(definitions, data)}
-        </ul>
-      );
+/**
+ * Render a list of details based on a given data and definitions set
+ * @param  {Object} options.data        The data for the definition
+ * @param  {Array}  options.definitions The list of definitions (info about each list item)
+ * @param  {Object} options             The props for the DetailsList component
+ * @return {JSX}
+ */
+const DetailsList = ({ data, definitions, }) => (
+  <div className="details-list">
+    {
+      !isEmpty(data) &&
+      <ul>
+        {
+          definitions.map(definition => (
+            <DetailsListItem
+              key={shortid.generate()}
+              label={definition.label}
+              value={textReplacement(definition.valueTemplate, data)}
+            />
+          ))
+        }
+      </ul>
     }
-  }
-
-  render() {
-    return (
-      <div className="details-list">
-        {this.renderList()}
-      </div>
-    );
-  }
-}
+  </div>
+);
 
 DetailsList.propTypes = {
   data: PropTypes.object.isRequired,

@@ -9,11 +9,7 @@ import React from 'react';
  * @param  {string}  options.value    User displayed value of the select option
  * @return {JSX}
  */
-const SelectListOption = ({
-  children,
-  disabled,
-  value,
-}) => (
+const SelectListOption = ({ children, disabled, value, }) => (
   <option
     disabled={disabled}
     value={value}

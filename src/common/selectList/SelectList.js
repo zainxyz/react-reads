@@ -1,47 +1,30 @@
 import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
 import shortid from 'shortid';
 
 import SelectListOption from './SelectListOption';
 
 /**
- * Class for rendering a select list drop-down based on the number of passed-in select options
- * @class
- * @extends {Component}
+ * Render a select-list drop-down based on the number of passed in options
+ * @param  {string}   options.defaultValue The default value of the select-list
+ * @param  {Function} options.onBlur       The callback for the select-list
+ * @param  {Array}    options.options      A list of select-list options
+ * @param  {string}   options.value        The current value of the select-list
+ * @param  {Object}   options              The props for the SelectList component
+ * @return {JSX}
  */
-class SelectList extends Component {
-  constructor(props) {
-    super(props);
-
-    // Bindings to 'this'
-    this.onBlur = this.onBlur.bind(this);
-  }
-
-  /**
-   * Upon each successful change of the select option call the passed-in 'onBlur()'
-   * @param  {Event}                e The event
-   * @return {Function|null}
-   */
-  onBlur(e) {
-    if (
-      this.props.onBlur &&
-      typeof this.props.onBlur === 'function'
-    ) {
-      this.props.onBlur(e.target.value);
-    }
-    return null;
-  }
-
-  /**
-   * Render all of the passed-in select list's options
-   * @return {JSX}
-   */
-  renderOptions() {
-    const { options, } = this.props;
-
-    if (!isEmpty(options)) {
-      return options.map(option => (
+const SelectList = ({ defaultValue, onBlur, options, value, }) => (
+  <select
+    onChange={(e) => onBlur(e.target.value)}
+    value={value}
+  >
+    <SelectListOption disabled value="">
+      {defaultValue}
+    </SelectListOption>
+    {
+      !isEmpty(options) &&
+      options.map(option => (
         <SelectListOption
           disabled={option.disabled}
           key={shortid.generate()}
@@ -50,32 +33,10 @@ class SelectList extends Component {
         >
           {option.label}
         </SelectListOption>
-      ));
+      ))
     }
-
-    return null;
-  }
-
-  render() {
-    let defaultValue = this.props.defaultValue;
-
-    if (!defaultValue) {
-      defaultValue = 'Select One';
-    }
-
-    return (
-      <select
-        onChange={this.onBlur}
-        value={this.props.value}
-      >
-        <SelectListOption disabled value="">
-          {defaultValue}
-        </SelectListOption>
-        {this.renderOptions()}
-      </select>
-    );
-  }
-}
+  </select>
+);
 
 SelectList.propTypes = {
   defaultValue: PropTypes.string,
@@ -85,7 +46,8 @@ SelectList.propTypes = {
 };
 
 SelectList.defaultProps = {
-  defaultValue: '',
+  defaultValue: 'Select One',
+  onBlur: () => {},
   value: '',
 };
 

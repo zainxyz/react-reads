@@ -1,76 +1,60 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import throttle from 'lodash/throttle';
+import React from 'react';
+import debounce from 'lodash/debounce';
 import { Link } from 'react-router-dom';
 
 /**
- * A generic search-bar that outputs the user's typed in value via a getQuery() function call,
- * which gets throttled based on the desired throttle value (in seconds).
- * @class
- * @extends {Component}
+ * Update the query value and send it back via a props 'getQuery()' function call
+ * @param  {string}        query The searched query
+ * @param  {Function}       getQuery The callback function
+ * @return {Function|null}
  */
-class SearchBar extends Component {
-  constructor(props) {
-    super(props);
+const updateQuery = (query, getQuery) => (
+  getQuery &&
+  typeof getQuery === 'function' ?
+  getQuery(query) : null
+);
 
-    // Throttle the updateQuery function to be only run every couple of seconds (or milliseconds)
-    this.updateQuery = throttle(this.updateQuery, props.throttleSeconds);
-  }
+/**
+ * Render a search bar
+ * @param  {string}   options.closeSearchURL  Where should the 'close' search button take you
+ * @param  {number}   options.debounceSeconds The number of seconds to debounce the fetch query call
+ * @param  {string}   options.placeholder     The placeholder for the search bar
+ * @param  {Function} options.getQuery        The callback function to pass back the user typed query
+ * @param  {Object}   options                 The props for the SearchBar component
+ * @return {JSX}
+ */
+const SearchBar = ({ closeSearchURL, debounceSeconds, placeholder, getQuery, }) => {
+  // Temper the frequency the 'updateQuery' event fires based on the given 'debounceSeconds'.
+  const debouncedUpdateQuery = debounce(updateQuery, debounceSeconds);
 
-  /**
-   * Update the query value and send it back via a props 'getQuery()' function call
-   * @param  {string}        query The searched query
-   * @return {Function|null}
-   */
-  updateQuery(query) {
-    if (
-      this.props.getQuery &&
-      typeof this.props.getQuery === 'function'
-    ) {
-      this.props.getQuery(query);
-    }
-    return null;
-  }
-
-  /**
-   * Render the search input for the user
-   * @return {JSX}
-   */
-  renderSearchInput() {
-    return (
+  return (
+    <div className="search-bar">
+      <Link to={closeSearchURL} className="close-search">
+        Close
+      </Link>
       <div className="search-input-wrapper">
         <input
-          onChange={(e) => this.updateQuery(e.target.value)}
-          placeholder={this.props.placeholder}
+          onChange={(e) => debouncedUpdateQuery(e.target.value, getQuery)}
+          placeholder={placeholder}
           type="text"
         />
       </div>
-    );
-  }
-
-  render() {
-    return (
-      <div className="search-bar">
-        <Link to={this.props.closeSearchURL} className="close-search">
-          Close
-        </Link>
-        {this.renderSearchInput()}
-      </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 SearchBar.propTypes = {
   closeSearchURL: PropTypes.string,
   getQuery: PropTypes.func.isRequired,
   placeholder: PropTypes.string,
-  throttleSeconds: PropTypes.number,
+  debounceSeconds: PropTypes.number,
 };
 
 SearchBar.defaultProps = {
   closeSearchURL: '/',
   placeholder: '',
-  throttleSeconds: 1000,
+  debounceSeconds: 200,
 };
 
 export default SearchBar;

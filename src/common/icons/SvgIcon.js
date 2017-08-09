@@ -1,47 +1,49 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
 
 /**
- * Class to build SVG Icons given a set of customization properties.
- * @class
- * @extends {Component}
+ * Build the styles for the SvgIcon component
+ * @param  {Object} style     The main styles
+ * @param  {string} fillColor The fill color
+ * @param  {number} width     The width
+ * @param  {number} height    The height
+ * @return {Object}
  */
-class SvgIcon extends Component {
-  /**
-   * Get the styles for the SVG Icon
-   * @return {Object}
-   */
-  getStyles() {
-    const { fillColor, height, style, width, } = this.props;
+const buildSvgStyles = (style, fillColor, width, height) => ({
+  display: 'inline-block',
+  color: '#fff',
+  fill: fillColor,
+  width,
+  height,
+  ...style,
+});
 
-    // Some default styles for the SVG Icon
-    const defaultStyles = {
-      display: 'inline-block',
-      color: '#fff',
-      fill: fillColor,
-      height,
-      width,
-    };
-
-    return {
-      ...defaultStyles,
-      ...style,
-    };
-  }
-
-  render() {
-    const { children, viewBox, } = this.props;
-
-    return (
-      <svg
-        style={this.getStyles()}
-        viewBox={viewBox}
-      >
-        {children}
-      </svg>
-    );
-  }
-}
+/**
+ * A component to build SVG icons given a set of customization properties.
+ * @param  {Node}   options.children  The children for the SVG Icon
+ * @param  {string} options.fillColor The fill color
+ * @param  {number} options.height    The height of the SVG Icon
+ * @param  {Object} options.style     The style for the SVG Icon
+ * @param  {string} options.viewBox   The view-box of the SVG Icon
+ * @param  {number} options.width     The width of the SVG Icon
+ * @param  {Object} options           The props for the SvgIcon component
+ * @return {JSX}
+ */
+const SvgIcon = ({
+  children,
+  fillColor,
+  height,
+  style,
+  viewBox,
+  width,
+}) => (
+  <svg
+    style={buildSvgStyles(style, fillColor, width,height)}
+    viewBox={viewBox}
+  >
+    {children}
+  </svg>
+);
 
 SvgIcon.propTypes = {
   children: PropTypes.node,

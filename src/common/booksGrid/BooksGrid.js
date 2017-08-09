@@ -1,43 +1,32 @@
-import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
 import shortid from 'shortid';
 
 import Book from 'common/book';
 
 /**
- * Class for rendering a collection of books in a grid.
- * @class
- * @extends {Component}
+ * Render a collection of books in a grid
+ * @param  {Array}    options.booksList       The list of books
+ * @param  {Function} options.onShelfChange   The callback for shelf change event
+ * @param  {boolean}  options.viewDetailsLink Should we display the 'view details' link?
+ * @param  {Object}   options                 The props for the BooksGrid component
+ * @return {JSX}
  */
-class BooksGrid extends Component {
-  /**
-   * Render an array of books based on the passed-in booksList
-   * @return {JSX|null}
-   */
-  renderBooks() {
-    if (!isEmpty(this.props.booksList)) {
-      return this.props.booksList.map((book) => (
+const BooksGrid = ({ booksList, onShelfChange, viewDetailsLink, }) => (
+  <ol className="books-grid">
+    {
+      booksList.map(book => (
         <li key={shortid.generate()}>
           <Book
             {...book}
-            onShelfChange={this.props.onShelfChange}
-            viewDetailsLink={this.props.viewDetailsLink}
+            onShelfChange={onShelfChange}
+            viewDetailsLink={viewDetailsLink}
           />
         </li>
-      ));
+      ))
     }
-    return null;
-  }
-
-  render() {
-    return (
-      <ol className="books-grid">
-        {this.renderBooks()}
-      </ol>
-    );
-  }
-}
+  </ol>
+);
 
 BooksGrid.propTypes = {
   booksList: PropTypes.array.isRequired,

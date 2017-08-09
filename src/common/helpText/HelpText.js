@@ -1,40 +1,27 @@
 import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React from 'react';
 import shortid from 'shortid';
 
 /**
- * Class to display a list of help texts to the user
- * @class
- * @extends {Component}
+ * Display a list of help texts
+ * @param  {Object} options.style The styles for the help texts
+ * @param  {Array}  options.text  The list of help texts to display
+ * @param  {Object} options       The props for the HelpText component
+ * @return {JSX}
  */
-class HelpText extends Component {
-  /**
-   * Render the list of texts to be displayed to the user
-   * @return {JSX}
-   */
-  renderTextList() {
-    const { style, text, } = this.props;
-
-    if (!isEmpty(text)) {
-      return text.map(text => (
-        <p key={shortid.generate()} style={style.singleLine}>{text}</p>
-      ));
-    }
-
-    return null;
-  }
-
-  render() {
-    return (
-      <div style={this.props.style}>
-        <div style={this.props.style.inner}>
-          {this.renderTextList()}
-        </div>
-      </div>
-    );
-  }
-}
+const HelpText = ({ style, text, }) => (
+  <div style={style}>
+    <div style={style.inner}>
+      {
+        !isEmpty(text) &&
+        text.map(text =>
+          <p key={shortid.generate()} style={style.singleLine}>{text}</p>
+        )
+      }
+    </div>
+  </div>
+);
 
 HelpText.propTypes = {
   text: PropTypes.array.isRequired,
