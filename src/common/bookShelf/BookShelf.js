@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
 import BooksGrid from 'common/booksGrid';
+import { SectionHeader } from 'common/typography';
 
 /**
  * Class for rendering a bookshelf
@@ -31,9 +32,17 @@ class BookShelf extends Component {
    * @return {JSX|null}
    */
   renderTitle() {
-    if (this.props.title) {
-      return <h2 className="bookshelf-title">{this.props.title}</h2>;
+    const { title, } = this.props;
+
+    if (title) {
+      return (
+        <SectionHeader
+          className="bookshelf-title"
+          title={title}
+        />
+      );
     }
+
     return null;
   }
 

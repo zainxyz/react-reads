@@ -8,6 +8,7 @@ import BookShelf from 'common/bookShelf';
 import Spinner from 'common/loading';
 import { constants as bookConstants } from 'common/book';
 import { filterBooksListByShelfId } from 'utils/bookUtils';
+import { PageTitle } from 'common/typography';
 
 /**
  * A library containing various books categorized into multiple bookshelves.
@@ -90,11 +91,11 @@ class MyReads extends Component {
   }
 
   renderTitle() {
-    if (this.props.title) {
+    const { title, } = this.props;
+
+    if (title) {
       return (
-        <div className="page-title">
-          <h1>{this.props.title}</h1>
-        </div>
+        <PageTitle title={title} />
       );
     }
 

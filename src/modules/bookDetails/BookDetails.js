@@ -9,6 +9,8 @@ import Spinner from 'common/loading';
 import { constants as bookConstants } from 'common/book';
 import { formatDate } from 'utils/dateUtils';
 import { getBookById } from 'api/booksAPI';
+import { PageTitle } from 'common/typography';
+import { PreviewLink } from 'common/links';
 import {
   buildBookCoverImageUrl,
   getBookISBN,
@@ -17,6 +19,11 @@ import {
 
 import UndefinedBookDetailsException from './UndefinedBookDetailsException';
 
+/**
+ * Class for displaying details about a selected book
+ * @class
+ * @extends {Component}
+ */
 class BookDetails extends Component {
   constructor(props) {
     super(props);
@@ -63,10 +70,10 @@ class BookDetails extends Component {
 
     if (book.title) {
       return (
-        <div className="page-title">
-          <h1>{book.title}</h1>
-          <p>{`by: ${author}`}</p>
-        </div>
+        <PageTitle
+          title={book.title}
+          subTitle={`by: ${author}`}
+        />
       );
     }
     return null;
@@ -108,15 +115,21 @@ class BookDetails extends Component {
     );
   }
 
+  renderBookDetailsHeader() {
+    return (
+      <div className="book-info__header">
+        <HomeIcon />
+        <Link to="/" className="nav-link">Return Home</Link>
+      </div>
+    );
+  }
+
   renderBookInfo() {
     const { book, } = this.state;
 
     return (
       <div className="book-info">
-        <div className="book-info__header">
-          <HomeIcon />
-          <Link to="/" className="nav-link">Return Home</Link>
-        </div>
+        {this.renderBookDetailsHeader()}
         <div className="book-info__image">
           {this.renderBookImage(book)}
         </div>
@@ -130,14 +143,13 @@ class BookDetails extends Component {
 
   renderPreviewLink(book) {
     return (
-      <a
+      <PreviewLink
         alt={`Preview - ${book.title}`}
         className="nav-link"
         href={book.previewLink}
         target="_blank"
-      >
-        Preview Book on Google
-      </a>
+        text="Preview Book on Google"
+      />
     );
   }
 
