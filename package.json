@@ -28,7 +28,7 @@
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.0.1",
     "eslint-config-react-app": "^1.0.5",
-    "eslint-config-react-xyz": "git@github.com:zainxyz/eslint-config-react-xyz.git",
+    "eslint-config-react-xyz": "https://github.com/zainxyz/eslint-config-react-xyz.git",
     "eslint-import-resolver-node": "^0.3.1",
     "eslint-loader": "^1.8.0",
     "eslint-plugin-flowtype": "^2.35.0",
