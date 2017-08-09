@@ -99,6 +99,7 @@ class BookSearch extends Component {
       return (
         <BooksGrid
           booksList={fetchedBooks}
+          viewDetailsLink
         />
       );
     }

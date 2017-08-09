@@ -11,6 +11,7 @@ import { formatDate } from 'utils/dateUtils';
 import { getBookById } from 'api/booksAPI';
 import { PageTitle } from 'common/typography';
 import { PreviewLink } from 'common/links';
+import { transformArrayIntoString } from 'utils/arrayUtils';
 import {
   buildBookCoverImageUrl,
   getBookISBN,
@@ -66,7 +67,7 @@ class BookDetails extends Component {
 
   renderDetailsHeader() {
     const { book, } = this.state;
-    const author = book.authors.join(', ');
+    const author = transformArrayIntoString(book.authors);
 
     if (book.title) {
       return (
@@ -97,7 +98,7 @@ class BookDetails extends Component {
     const data = {
       ...book,
       subtitle: book.subtitle,
-      categories: book.categories.join(', '),
+      categories: transformArrayIntoString(book.categories),
       shelf: translateBookShelfName(book.shelf, bookConstants.SHELF_TITLES_MAP),
       publishedDate: formatDate(
         book.publishedDate,
