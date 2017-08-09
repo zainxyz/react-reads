@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import SvgIcon from 'common/icons/SvgIcon';
+
 import SpinnerText from './SpinnerText';
 
 const Spinner = (props) => {

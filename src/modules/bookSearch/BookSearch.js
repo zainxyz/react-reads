@@ -6,6 +6,7 @@ import BooksGrid from 'common/booksGrid';
 import HelpText from 'common/helpText';
 import SearchBar from 'common/searchBar';
 import Spinner from 'common/loading';
+import { mergeOldAndNewListsByKey } from 'utils/arrayUtils';
 import { searchBooks } from 'api/booksAPI';
 
 /**
@@ -33,6 +34,11 @@ class BookSearch extends Component {
     window.scrollTo(0, 0);
   }
 
+  componentWillUnmount() {
+    // Calling the parent's 'refetchAllBooks' to re-fetch the books upon an un-mounting.
+    this.props.refetchAllBooks(this.state.fetchedBooks);
+  }
+
   /**
    * Fetch a list of books based on the given query
    * @param  {string}        query The given query to search
@@ -44,11 +50,11 @@ class BookSearch extends Component {
       searchBooks(query, 10)
         .then(res => {
           const booksList = res.books ? res.books : [];
+          const { originalBooksList, } = this.props;
+          const updatedBooksList = mergeOldAndNewListsByKey(originalBooksList, booksList, 'id');
 
-          if (!isEmpty(booksList) &&
-            Array.isArray(booksList)
-          ) {
-            this.setState({ fetchedBooks: booksList, isLoading: false, });
+          if (!isEmpty(updatedBooksList)) {
+            this.setState({ fetchedBooks: updatedBooksList, isLoading: false, });
           } else {
             this.setState({ fetchedBooks: [], isLoading: false, });
           }
@@ -134,6 +140,8 @@ class BookSearch extends Component {
 BookSearch.propTypes = {
   closeSearchURL: PropTypes.string,
   noBooksFoundText: PropTypes.array,
+  refetchAllBooks: PropTypes.func,
+  originalBooksList: PropTypes.array,
   placeholder: PropTypes.string,
   spinner: PropTypes.object,
   startTypingText: PropTypes.array,
@@ -148,6 +156,8 @@ BookSearch.defaultProps = {
     'Acceptable search terms are the following:',
     "'Android', 'Art', 'Artificial Intelligence', 'Astronomy', 'Austen', 'Baseball', 'Basketball', 'Bhagat', 'Biography', 'Brief', 'Business', 'Camus', 'Cervantes', 'Christie', 'Classics', 'Comics', 'Cook', 'Cricket', 'Cycling', 'Desai', 'Design', 'Development', 'Digital Marketing', 'Drama', 'Drawing', 'Dumas', 'Education', 'Everything', 'Fantasy', 'Film', 'Finance', 'First', 'Fitness', 'Football', 'Future', 'Games', 'Gandhi', 'History', 'History', 'Homer', 'Horror', 'Hugo', 'Ibsen', 'Journey', 'Kafka', 'King', 'Lahiri', 'Larsson', 'Learn', 'Literary Fiction', 'Make', 'Manage', 'Marquez', 'Money', 'Mystery', 'Negotiate', 'Painting', 'Philosophy', 'Photography', 'Poetry', 'Production', 'Program Javascript', 'Programming', 'React', 'Redux', 'River', 'Robotics', 'Rowling', 'Satire', 'Science Fiction', 'Shakespeare', 'Singh', 'Swimming', 'Tale', 'Thrun', 'Time', 'Tolstoy', 'Travel', 'Ultimate', 'Virtual Reality', 'Web Development', 'iOS'"
   ],
+  refetchAllBooks: () => {},
+  originalBooksList: [],
   placeholder: '',
   spinner: {
     fillColor: '#F00B42', // FOOBAR

@@ -6,16 +6,16 @@ import { Link } from 'react-router-dom';
 import DetailsList from 'common/detailsList';
 import HomeIcon from 'common/icons/HomeIcon';
 import Spinner from 'common/loading';
-import UndefinedBookDetailsException from './UndefinedBookDetailsException';
 import { constants as bookConstants } from 'common/book';
 import { formatDate } from 'utils/dateUtils';
 import { getBookById } from 'api/booksAPI';
-import { transformArrayIntoString } from 'utils/arrayUtils';
 import {
   buildBookCoverImageUrl,
   getBookISBN,
   translateBookShelfName,
 } from 'utils/bookUtils';
+
+import UndefinedBookDetailsException from './UndefinedBookDetailsException';
 
 class BookDetails extends Component {
   constructor(props) {
@@ -59,7 +59,7 @@ class BookDetails extends Component {
 
   renderDetailsHeader() {
     const { book, } = this.state;
-    const author = transformArrayIntoString(book.authors);
+    const author = book.authors.join(', ');
 
     if (book.title) {
       return (
@@ -89,8 +89,8 @@ class BookDetails extends Component {
     const { definitions, } = this.props;
     const data = {
       ...book,
-      subtitle: transformArrayIntoString(book.subtitle),
-      categories: transformArrayIntoString(book.categories),
+      subtitle: book.subtitle,
+      categories: book.categories.join(', '),
       shelf: translateBookShelfName(book.shelf, bookConstants.SHELF_TITLES_MAP),
       publishedDate: formatDate(
         book.publishedDate,

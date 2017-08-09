@@ -1,6 +1,6 @@
 import isEmpty from 'lodash/isEmpty';
 
-import { GET, PUT, POST } from './HTTP';
+import { GET, PUT, POST } from 'api/HTTP';
 
 /**
  * The Main API Url

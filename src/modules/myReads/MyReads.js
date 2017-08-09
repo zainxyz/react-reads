@@ -6,10 +6,8 @@ import { Link } from 'react-router-dom';
 
 import BookShelf from 'common/bookShelf';
 import Spinner from 'common/loading';
-import UndefinedBooksListException from './UndefinedBooksListException';
 import { constants as bookConstants } from 'common/book';
 import { filterBooksListByShelfId } from 'utils/bookUtils';
-import { getAllBooks } from 'api/booksAPI';
 
 /**
  * A library containing various books categorized into multiple bookshelves.
@@ -25,71 +23,53 @@ class MyReads extends Component {
       isLoading: true,
       loadingText: 'Fetching books...',
     };
-
-    // Bindings to 'this'
-    this.onShelfChange = this.onShelfChange.bind(this);
   }
 
   componentDidMount() {
     // Make sure we jump to the top of the page.
     window.scrollTo(0, 0);
+    // Create bookshelves for our MyReads library
+    this.createBookShelves(this.props.booksList);
+  }
 
-    this.fetchAllBooks();
+  componentWillReceiveProps(nextProps) {
+    // Create bookshelves for our MyReads library
+    this.createBookShelves(nextProps.booksList);
   }
 
   /**
-   * Each time a shelfChange occurs on a 'Book', we should re-fetch all of the books.
-   * @param  {Object}  updatedBooks Return value of running the PUT fetch call on the /books/bookID
-   * @return {Promise}
+   * Create bookshelves for our MyReads Library
+   * @param  {Array} booksList The list of books
    */
-  onShelfChange(updatedBooks) {
-    if (!isEmpty(updatedBooks)) {
-      this.fetchAllBooks();
-    }
-    return null;
-  }
+  createBookShelves(booksList) {
+    // Filtered books on the 'currentlyReading' shelf.
+    const currentlyReading = filterBooksListByShelfId(booksList, 'currentlyReading');
+    // Filtered books on the 'read' shelf.
+    const read = filterBooksListByShelfId(booksList, 'read');
+    // Filtered books on the 'wantToRead' shelf.
+    const wantToRead = filterBooksListByShelfId(booksList, 'wantToRead');
 
-  /**
-   * Make a fetch request to get all of the books for the given user (me in this case)
-   * @return {Promise}
-   */
-  fetchAllBooks() {
-    getAllBooks()
-      .then(res => {
-        // This is the final booksList coming back from the API fetch call.
-        const booksList = res.books ? res.books : [];
-        // Filtered books on the 'currentlyReading' shelf.
-        const currentlyReading = filterBooksListByShelfId(booksList, 'currentlyReading');
-        // Filtered books on the 'read' shelf.
-        const read = filterBooksListByShelfId(booksList, 'read');
-        // Filtered books on the 'wantToRead' shelf.
-        const wantToRead = filterBooksListByShelfId(booksList, 'wantToRead');
-
-        // After successfully fetching the 'booksList', update the component's state with the
-        // updated shelves and their 'booksList.'
-        this.setState({
-          shelves: {
-            currentlyReading: {
-              title: bookConstants.SHELF_TITLES_MAP.currentlyReading,
-              booksList: currentlyReading,
-            },
-            wantToRead: {
-              title: bookConstants.SHELF_TITLES_MAP.wantToRead,
-              booksList: wantToRead,
-            },
-            read: {
-              title: bookConstants.SHELF_TITLES_MAP.read,
-              booksList: read,
-            },
+    if (!isEmpty(booksList)) {
+      // After successfully fetching the 'booksList', update the component's state with the
+      // updated shelves and their 'booksList.'
+      this.setState({
+        shelves: {
+          currentlyReading: {
+            title: bookConstants.SHELF_TITLES_MAP.currentlyReading,
+            booksList: currentlyReading,
           },
-          isLoading: false,
-        });
-      })
-      .catch((err) => {
-        throw new UndefinedBooksListException();
+          wantToRead: {
+            title: bookConstants.SHELF_TITLES_MAP.wantToRead,
+            booksList: wantToRead,
+          },
+          read: {
+            title: bookConstants.SHELF_TITLES_MAP.read,
+            booksList: read,
+          },
+        },
+        isLoading: false,
       });
-
-    return null;
+    }
   }
 
   renderBookShelves() {
@@ -101,7 +81,7 @@ class MyReads extends Component {
         <BookShelf
           {...shelves[idx]}
           key={shortid.generate()}
-          onShelfChange={this.onShelfChange}
+          onShelfChange={this.props.onShelfChange}
         />
       ));
     }
@@ -145,17 +125,20 @@ class MyReads extends Component {
 }
 
 MyReads.propTypes = {
+  booksList: PropTypes.array.isRequired,
+  onShelfChange: PropTypes.func,
   spinner: PropTypes.object,
   title: PropTypes.string,
 };
 
 MyReads.defaultProps = {
+  onShelfChange: () => {},
   spinner: {
     style: {
       marginTop: '200px',
     },
   },
-  title: 'Zain\'s Reads',
+  title: 'MyReads Library',
 };
 
 export default MyReads;

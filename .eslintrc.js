@@ -1,4 +1,10 @@
 module.exports = {
+  "env": {
+    "es6": true,
+    "browser": true,
+    "mocha": true,
+    "node": true
+  },
   "extends": "eslint-config-react-xyz",
   "globals": {
     "document": true,
@@ -11,37 +17,37 @@ module.exports = {
     "import"
   ],
   "rules": {
-    "import/no-extraneous-dependencies": [
-      "error",
-      {
-        "dependencies": [
-          "api/**",
-          "common/**",
-          "modules/**",
-          "utils/**"
-        ],
-      }
-    ],
     "no-template-curly-in-string": "off",
     "react/forbid-prop-types": "off",
     "valid-jsdoc": [
-      "warn", {
-        "requireReturn": false,
+      "warn",
+      {
         "prefer": {
           "returns": "return",
-          "yield": "yields",
+          "yield": "yields"
         },
         "preferType": {
-          "array": "Array",
           "Boolean": "boolean",
-          "function": "Function",
           "Number": "number",
-          "object": "Object",
           "String": "string",
+          "array": "Array",
+          "function": "Function",
+          "object": "Object"
         },
         "requireParamDescription": false,
-        "requireReturnDescription": false,
+        "requireReturn": false,
+        "requireReturnDescription": false
       }
     ]
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "moduleDirectory": [
+          "src",
+          "node_modules"
+        ]
+      }
+    }
   }
 };

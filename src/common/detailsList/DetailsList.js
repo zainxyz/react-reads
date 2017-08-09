@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import shortid from 'shortid';
 
-import DetailsListItem from './DetailsListItem';
 import { textReplacement } from 'utils/stringUtils';
+
+import DetailsListItem from './DetailsListItem';
 
 class DetailsList extends Component {
   renderListItems(definitions, item) {
