@@ -25,12 +25,8 @@ const renderBookCover = (title, imageLinks, style, subtitle) => {
     imageLinks.thumbnail : '';
 
   // Build the alternate text for the image
-  let altText = `Book: ${title}`;
-
-  // Append the 'subtitle' of the book (to the altText) if one is present
-  if (!isEmpty(subtitle)) {
-    altText = `${altText} (${subtitle})`;
-  }
+  const altText = !isEmpty(subtitle) ?
+    `Book: ${title} (${subtitle})` : `Book: ${title}`;
 
   return (
     <img
