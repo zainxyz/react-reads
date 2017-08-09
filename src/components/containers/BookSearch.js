@@ -2,10 +2,10 @@ import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import BooksGrid from 'common/booksGrid';
-import HelpText from 'common/helpText';
-import SearchBar from 'common/searchBar';
-import Spinner from 'common/loading';
+import BookGrid from 'components/common/books/BookGrid';
+import HelpText from 'components/common/typography/HelpText';
+import SearchBar from 'components/common/search/SearchBar';
+import Spinner from 'components/common/loading/Spinner';
 import { searchBooks } from 'api/booksAPI';
 
 /**
@@ -100,7 +100,7 @@ class BookSearch extends Component {
    * Render a books grid for the fetched books
    * @return {JSX}
    */
-  renderSearchedBooksGrid() {
+  renderSearchedBookGrid() {
     const { fetchedBooks, isLoading, loadingText, } = this.state;
     const { fetchAllBooks, } = this.props;
 
@@ -110,10 +110,10 @@ class BookSearch extends Component {
     }
 
     // If we have finished fetching the books, and the fetchedBooks list isn't empty then
-    // display the BooksGrid.
+    // display the BookGrid.
     if (!isLoading && !isEmpty(fetchedBooks)) {
       return (
-        <BooksGrid
+        <BookGrid
           booksList={fetchedBooks}
           onShelfChange={fetchAllBooks}
           viewDetailsLink
@@ -153,7 +153,7 @@ class BookSearch extends Component {
           throttleSeconds={this.props.throttleSeconds}
         />
         <div className="search-results">
-          {this.renderSearchedBooksGrid()}
+          {this.renderSearchedBookGrid()}
         </div>
       </div>
     );
@@ -183,8 +183,6 @@ BookSearch.defaultProps = {
   originalBooksList: [],
   placeholder: '',
   spinner: {
-    fillColor: '#F00B42', // FOOBAR
-    textColor: '#F00B42', // FOOBAR
     style: {
       marginTop: '200px',
     },

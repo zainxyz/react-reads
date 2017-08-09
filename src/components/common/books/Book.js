@@ -3,11 +3,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import SelectList from 'common/selectList';
+import * as BookConstants from 'constants/book';
+import SelectList from 'components/common/selectList/SelectList';
 import { moveBookToShelf } from 'api/booksAPI';
 import { transformArrayIntoString } from 'utils/arrayUtils';
-
-import * as BookConstants from './BookConstants';
 
 /**
  * Render the book cover

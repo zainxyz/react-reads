@@ -4,11 +4,11 @@ import React, { Component } from 'react';
 import shortid from 'shortid';
 import { Link } from 'react-router-dom';
 
-import BookShelf from 'common/bookShelf';
-import Spinner from 'common/loading';
-import { constants as bookConstants } from 'common/book';
+import * as bookConstants from 'constants/book';
+import BookShelf from 'components/common/books/BookShelf';
+import PageTitle from 'components/common/typography/PageTitle';
+import Spinner from 'components/common/loading/Spinner';
 import { filterBooksListByShelfId } from 'utils/bookUtils';
-import { PageTitle } from 'common/typography';
 
 /**
  * A library containing various books categorized into multiple bookshelves.

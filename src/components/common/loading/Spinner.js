@@ -2,7 +2,7 @@ import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import SvgIcon from 'common/icons/SvgIcon';
+import SvgIcon from 'components/common/icons/SvgIcon';
 
 import SpinnerText from './SpinnerText';
 

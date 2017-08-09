@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import BooksGrid from 'common/booksGrid';
-import { SectionHeader } from 'common/typography';
+import SectionHeader from 'components/common/typography/SectionHeader';
+
+import BookGrid from './BookGrid';
 
 /**
  * Render a single bookshelf containing a collection of books
@@ -24,7 +25,7 @@ const BookShelf = ({ booksList, onShelfChange, title, }) => (
     <div className="bookshelf-books">
       {
         booksList &&
-        <BooksGrid
+        <BookGrid
           booksList={booksList}
           onShelfChange={onShelfChange}
           viewDetailsLink

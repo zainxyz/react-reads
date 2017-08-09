@@ -2,12 +2,13 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 
-import 'App.css';
-import BookDetails from 'modules/bookDetails';
-import BookSearch from 'modules/bookSearch';
-import MyReads from 'modules/myReads';
-import UndefinedBooksListException from 'UndefinedBooksListException';
+import BookDetails from 'components/containers/BookDetails';
+import BookSearch from 'components/containers/BookSearch';
+import MyReads from 'components/containers/MyReads';
+import UndefinedBooksListException from 'errors/UndefinedBooksListException';
 import { getAllBooks } from 'api/booksAPI';
+
+import './App.css';
 
 /**
  * Class for creating the main Books Application

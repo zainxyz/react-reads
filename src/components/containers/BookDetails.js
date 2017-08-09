@@ -3,14 +3,15 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import DetailsList from 'common/detailsList';
-import HomeIcon from 'common/icons/HomeIcon';
-import Spinner from 'common/loading';
-import { constants as bookConstants } from 'common/book';
+import * as BookConstants from 'constants/book';
+import DetailsList from 'components/common/detailsList/DetailsList';
+import HomeIcon from 'components/common/icons/HomeIcon';
+import PageTitle from 'components/common/typography/PageTitle';
+import PreviewLink from 'components/common/typography/PreviewLink';
+import Spinner from 'components/common/loading/Spinner';
+import UndefinedBookDetailsException from 'errors/UndefinedBookDetailsException';
 import { formatDate } from 'utils/dateUtils';
 import { getBookById } from 'api/booksAPI';
-import { PageTitle } from 'common/typography';
-import { PreviewLink } from 'common/links';
 import { transformArrayIntoString } from 'utils/arrayUtils';
 import {
   buildBookCoverImageUrl,
@@ -18,7 +19,6 @@ import {
   translateBookShelfName,
 } from 'utils/bookUtils';
 
-import UndefinedBookDetailsException from './UndefinedBookDetailsException';
 
 /**
  * Class for displaying details about a selected book
@@ -99,7 +99,7 @@ class BookDetails extends Component {
       ...book,
       subtitle: book.subtitle,
       categories: transformArrayIntoString(book.categories),
-      shelf: translateBookShelfName(book.shelf, bookConstants.SHELF_TITLES_MAP),
+      shelf: translateBookShelfName(book.shelf, BookConstants.SHELF_TITLES_MAP),
       publishedDate: formatDate(
         book.publishedDate,
         'YYYY-MM-DD',

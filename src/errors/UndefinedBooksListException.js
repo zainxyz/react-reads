@@ -1,4 +1,4 @@
-import CustomError from 'common/customError';
+import CustomError from 'errors/CustomError';
 
 /**
  * Class for throwing an Undefined Books List Exception
